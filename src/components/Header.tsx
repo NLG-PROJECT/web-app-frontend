@@ -37,7 +37,7 @@ export default function Header() {
         isScrolled ? 'bg-background/80 shadow-sm' : 'bg-transparent'
       }`}
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-bold">
           <div className="size-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground">
             P
@@ -129,7 +129,7 @@ export default function Header() {
           exit={{ opacity: 0, y: -20 }}
           className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
         >
-          <div className="container py-4 flex flex-col gap-4">
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-4">
             <Link
               to="/features"
               className="py-2 text-sm font-medium"
