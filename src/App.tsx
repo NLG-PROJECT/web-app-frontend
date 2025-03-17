@@ -1,31 +1,45 @@
 // import { Button } from './components/ui/button'
 // import { Send } from 'lucide-react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import ParticleAnimation from './components/ParticleAnimation'
-import { ThemeProvider } from './context/ThemeProvider'
-import { ThemeToggle } from './components/ThemeToggle'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Investor from './pages/Investor'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom'
+import { ThemeProvider } from '@/context/ThemeProvider'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import AppPage from '@/pages/App'
+import ReportAnalysis from '@/pages/ReportAnalysis'
+import ParticleAnimation from '@/components/ParticleAnimation'
+import Investor from '@/pages/Investor'
 
-function App() {
+function AppContent() {
+  const location = useLocation()
+  const isReportAnalysis = location.pathname === '/report-analysis'
+
   return (
-    <Router>
-      <ThemeProvider defaultTheme="dark" storageKey="penny-wise-theme">
-        <div className="min-h-screen bg-background">
-          <Header />
-          <main>
-            <Routes>
-              <Route path="/" element={<ParticleAnimation />} />
-              <Route path="/investor" element={<Investor />} />
-              {/* Add more routes as needed */}
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </ThemeProvider>
-    </Router>
+    <div className="flex flex-col min-h-screen">
+      {!isReportAnalysis && <Header />}
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<ParticleAnimation />} />
+          <Route path="/app" element={<AppPage />} />
+          <Route path="/report-analysis" element={<ReportAnalysis />} />
+          <Route path="/investor" element={<Investor />} />
+        </Routes>
+      </main>
+      {!isReportAnalysis && <Footer />}
+    </div>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <ThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ThemeProvider>
+  )
+}
