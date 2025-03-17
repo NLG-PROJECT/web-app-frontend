@@ -8,6 +8,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Investor from './pages/Investor'
 import AppPage from './pages/App'
+import ReportAnalysis from './pages/ReportAnalysis'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path="/" element={<ParticleAnimation />} />
               <Route path="/investor" element={<Investor />} />
               <Route path="/app" element={<AppPage />} />
+              <Route path="/report-analysis" element={<ReportAnalysis />} />
               {/* Add more routes as needed */}
             </Routes>
           </main>

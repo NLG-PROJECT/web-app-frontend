@@ -32,6 +32,7 @@ const quickActions = [
         />
       </svg>
     ),
+    action: () => (window.location.href = '/report-analysis'),
   },
   {
     label: 'Compare Businesses',
@@ -156,6 +157,7 @@ export default function AppPage() {
                 key={index}
                 variant="outline"
                 className="flex items-center gap-2"
+                onClick={action.action}
               >
                 {action.icon}
                 {action.label}
