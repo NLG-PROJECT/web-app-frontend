@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MessageSquare } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { ReportHeader } from '@/components/ReportHeader'
 
 export default function ReportAnalysis() {
   const [currentSection, setCurrentSection] = useState('executive-summary')
