@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MessageSquare } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function ReportAnalysis() {
   const [currentSection, setCurrentSection] = useState('executive-summary')
-  const [isChatOpen, setIsChatOpen] = useState(true)
+  const [isChatOpen, setIsChatOpen] = useState(false)
 
   return (
     <div className="flex-1 flex flex-col">
@@ -28,7 +29,24 @@ export default function ReportAnalysis() {
                 className="relative"
                 onClick={() => setIsChatOpen(!isChatOpen)}
               >
-                <MessageSquare className="size-4" />
+                <motion.div
+                  animate={
+                    !isChatOpen
+                      ? {
+                          scale: [1, 1.1, 1],
+                          rotate: [0, 5, -5, 0],
+                          color: ['#888888', '#8B5CF6', '#888888'],
+                        }
+                      : {}
+                  }
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                >
+                  <MessageSquare className="size-4" />
+                </motion.div>
               </Button>
             </div>
 
