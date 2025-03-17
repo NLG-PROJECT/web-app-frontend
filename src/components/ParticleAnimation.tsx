@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useTheme } from '../context/ThemeProvider'
 import { ArrowRight, Building2, LineChart } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function ParticleAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -284,19 +285,21 @@ export default function ParticleAnimation() {
           Next Generation Investor Relations
         </p>
         <div className="flex gap-4 sm:gap-6 mt-12 sm:mt-14">
-          <button
-            className={`group px-8 py-3.5 rounded-xl text-base sm:text-lg font-medium transition-all
-              flex items-center gap-2 sm:gap-3
-              ${
-                theme === 'dark'
-                  ? 'bg-white text-black hover:bg-gray-200'
-                  : 'bg-black text-white hover:bg-gray-800'
-              }`}
-          >
-            <LineChart className="w-5 h-5" />
-            <span>I'm an Investor</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-          </button>
+          <Link to="/investor">
+            <button
+              className={`group px-8 py-3.5 rounded-xl text-base sm:text-lg font-medium transition-all
+                flex items-center gap-2 sm:gap-3
+                ${
+                  theme === 'dark'
+                    ? 'bg-white text-black hover:bg-gray-200'
+                    : 'bg-black text-white hover:bg-gray-800'
+                }`}
+            >
+              <LineChart className="w-5 h-5" />
+              <span>I'm an Investor</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            </button>
+          </Link>
           <button
             className={`group px-8 py-3.5 rounded-xl text-base sm:text-lg font-medium transition-all
               flex items-center gap-2 sm:gap-3
