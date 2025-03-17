@@ -144,8 +144,6 @@ export default function ParticleAnimation() {
     function animate(scale: number) {
       if (!ctx || !canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = theme === 'dark' ? 'black' : 'white'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       const { x: mouseX, y: mouseY } = mousePositionRef.current
       const maxDistance = 240
@@ -267,12 +265,17 @@ export default function ParticleAnimation() {
         theme === 'dark' ? 'bg-black' : 'bg-white'
       }`}
     >
+      {/* Grid Background */}
+      <div className="absolute inset-0 h-full w-full z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8884_1px,transparent_1px),linear-gradient(to_bottom,#8884_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#fff4_1px,transparent_1px),linear-gradient(to_bottom,#fff4_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+      </div>
+
       <canvas
         ref={canvasRef}
-        className="w-full h-full absolute top-0 left-0 touch-none"
+        className="w-full h-full absolute top-0 left-0 touch-none z-10"
         aria-label="Interactive particle effect with animated text"
       />
-      <div className="absolute flex flex-col items-center">
+      <div className="absolute flex flex-col items-center z-20">
         <p
           className={`${
             theme === 'dark' ? 'text-gray-100/90' : 'text-gray-800/90'
