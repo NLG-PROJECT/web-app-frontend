@@ -7,6 +7,7 @@ import { ThemeToggle } from './components/ThemeToggle'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Investor from './pages/Investor'
+import AppPage from './pages/App'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Routes>
               <Route path="/" element={<ParticleAnimation />} />
               <Route path="/investor" element={<Investor />} />
+              <Route path="/app" element={<AppPage />} />
               {/* Add more routes as needed */}
             </Routes>
           </main>
