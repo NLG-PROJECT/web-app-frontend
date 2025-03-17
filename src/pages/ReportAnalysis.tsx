@@ -7,10 +7,30 @@ import { MessageSquare } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { ReportHeader } from '@/components/ReportHeader'
 import { ReportFooter } from '@/components/ReportFooter'
+import { ReportUpload } from '@/components/ReportUpload'
 
 export default function ReportAnalysis() {
   const [currentSection, setCurrentSection] = useState('executive-summary')
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [hasReport, setHasReport] = useState(false)
+  const [reportName, setReportName] = useState<string | null>(null)
+
+  const handleReportUpload = (fileName: string) => {
+    setReportName(fileName)
+    setHasReport(true)
+  }
+
+  if (!hasReport) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <ReportHeader />
+        <div className="flex-1">
+          <ReportUpload onUpload={handleReportUpload} />
+        </div>
+        <ReportFooter />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -24,7 +44,10 @@ export default function ReportAnalysis() {
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-3xl font-bold">Report Analysis</h1>
+              <div>
+                <h1 className="text-3xl font-bold">Report Analysis</h1>
+                <p className="text-muted-foreground">{reportName}</p>
+              </div>
               <Button
                 variant="outline"
                 size="icon"
