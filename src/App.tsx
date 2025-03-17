@@ -2,21 +2,21 @@
 // import { Send } from 'lucide-react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ParticleAnimation from './components/ParticleAnimation'
-import { ThemeProvider } from './context/ThemeProvider'
+import { ThemeProvider } from '@/context/ThemeProvider'
 import { ThemeToggle } from './components/ThemeToggle'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Investor from './pages/Investor'
-import AppPage from './pages/App'
-import ReportAnalysis from './pages/ReportAnalysis'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import AppPage from '@/pages/App'
+import Investor from '@/pages/Investor'
+import ReportAnalysis from '@/pages/ReportAnalysis'
 
 function App() {
   return (
-    <Router>
-      <ThemeProvider defaultTheme="dark" storageKey="penny-wise-theme">
-        <div className="min-h-screen bg-background">
+    <ThemeProvider>
+      <Router>
+        <div className="flex flex-col min-h-screen">
           <Header />
-          <main>
+          <main className="flex-1">
             <Routes>
               <Route path="/" element={<ParticleAnimation />} />
               <Route path="/investor" element={<Investor />} />
@@ -27,8 +27,8 @@ function App() {
           </main>
           <Footer />
         </div>
-      </ThemeProvider>
-    </Router>
+      </Router>
+    </ThemeProvider>
   )
 }
 

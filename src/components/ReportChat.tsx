@@ -17,8 +17,8 @@ interface Message {
 }
 
 interface ReportChatProps {
-  currentSection?: string
-  onClose?: () => void
+  currentSection: string
+  onClose: () => void
 }
 
 export function ReportChat({ currentSection, onClose }: ReportChatProps) {
@@ -68,19 +68,21 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
   }
 
   return (
-    <div className="fixed right-0 top-0 h-full w-[400px] border-l border-border bg-background shadow-lg flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <div className="flex items-center gap-2">
-          <MessageSquare className="size-5" />
-          <h2 className="font-semibold">Report Assistant</h2>
+    <div className="flex flex-col h-full">
+      {/* Chat Header */}
+      <div className="flex items-center justify-between p-4 border-b">
+        <div>
+          <h3 className="font-semibold">AI Assistant</h3>
+          <p className="text-sm text-muted-foreground">
+            Current section: {currentSection}
+          </p>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>
           <X className="size-4" />
         </Button>
       </div>
 
-      {/* Messages */}
+      {/* Chat Messages */}
       <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
         <div className="space-y-4">
           {messages.map((message) => (
@@ -120,49 +122,26 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
         </div>
       </ScrollArea>
 
-      {/* Quick Actions */}
-      <div className="p-4 border-t border-border">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button variant="outline" size="sm" className="text-xs">
-            <ChevronRight className="size-3 mr-1" />
-            Revenue Growth
-          </Button>
-          <Button variant="outline" size="sm" className="text-xs">
-            <ChevronRight className="size-3 mr-1" />
-            Market Analysis
-          </Button>
-          <Button variant="outline" size="sm" className="text-xs">
-            <ChevronRight className="size-3 mr-1" />
-            Risk Factors
-          </Button>
-        </div>
-
-        {/* Contact Options */}
-        <div className="flex items-center gap-2 mb-4">
-          <Button variant="outline" size="sm" className="flex-1">
-            <Phone className="size-4 mr-2" />
-            Contact Business
-          </Button>
-          <Button variant="outline" size="sm" className="flex-1">
-            <Mail className="size-4 mr-2" />
-            Email
-          </Button>
-        </div>
-
-        {/* Input */}
+      {/* Chat Input */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleSend()
+        }}
+        className="p-4 border-t"
+      >
         <div className="flex gap-2">
           <Input
-            placeholder="Ask about the report..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            disabled={isLoading}
+            placeholder="Ask about this section..."
+            className="flex-1"
           />
-          <Button size="icon" onClick={handleSend} disabled={isLoading}>
+          <Button type="submit" size="icon">
             <Send className="size-4" />
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
