@@ -6,22 +6,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MessageSquare } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { ReportHeader } from '@/components/ReportHeader'
+import { ReportFooter } from '@/components/ReportFooter'
 
 export default function ReportAnalysis() {
   const [currentSection, setCurrentSection] = useState('executive-summary')
   const [isChatOpen, setIsChatOpen] = useState(false)
 
   return (
-    <div className="flex-1 flex flex-col">
-      {/* Main Content */}
-      <div className="flex-1 relative">
+    <div className="min-h-screen flex flex-col">
+      <ReportHeader />
+      <div className="flex-1 flex relative">
         {/* Main Content Area */}
         <div
-          className={`h-full transition-all duration-300 ${
-            isChatOpen ? 'mr-[400px]' : ''
+          className={`flex-1 transition-all duration-300 ${
+            isChatOpen ? 'pr-[400px]' : ''
           }`}
         >
-          <div className="container mx-auto py-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex justify-between items-center mb-8">
               <h1 className="text-3xl font-bold">Report Analysis</h1>
               <Button
@@ -156,6 +157,7 @@ export default function ReportAnalysis() {
           </div>
         )}
       </div>
+      <ReportFooter />
     </div>
   )
 }
