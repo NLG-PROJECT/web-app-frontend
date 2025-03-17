@@ -11,6 +11,8 @@ import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import AppPage from '@/pages/App'
 import ReportAnalysis from '@/pages/ReportAnalysis'
+import ParticleAnimation from '@/components/ParticleAnimation'
+import Investor from '@/pages/Investor'
 
 function AppContent() {
   const location = useLocation()
@@ -21,8 +23,10 @@ function AppContent() {
       {!isReportAnalysis && <Header />}
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<AppPage />} />
+          <Route path="/" element={<ParticleAnimation />} />
+          <Route path="/app" element={<AppPage />} />
           <Route path="/report-analysis" element={<ReportAnalysis />} />
+          <Route path="/investor" element={<Investor />} />
         </Routes>
       </main>
       {!isReportAnalysis && <Footer />}

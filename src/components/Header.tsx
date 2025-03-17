@@ -1,19 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X, Moon, Sun } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTheme } from '@/context/ThemeProvider'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ModeToggle } from '@/components/ModeToggle'
 
 export function Header() {
   const location = useLocation()
+  const navigate = useNavigate()
   const isReportAnalysis = location.pathname === '/report-analysis'
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  // TODO: Replace with actual auth check when authentication is implemented
+  const isLoggedIn =
+    location.pathname === '/app' || location.pathname === '/report-analysis'
 
   useEffect(() => {
     setMounted(true)
@@ -33,13 +38,23 @@ export function Header() {
     setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    // Navigate to /app if logged in, otherwise to home page
+    navigate(isLoggedIn ? '/app' : '/')
+  }
+
   // If we're on the report analysis page, render the minimalistic header
   if (isReportAnalysis) {
     return (
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex h-16 items-center">
           <div className="mr-4 flex">
-            <Link to="/" className="mr-6 flex items-center space-x-2">
+            <Link
+              to={isLoggedIn ? '/app' : '/'}
+              onClick={handleLogoClick}
+              className="mr-6 flex items-center space-x-2"
+            >
               <div className="size-6 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground">
                 P
               </div>
@@ -79,7 +94,11 @@ export function Header() {
       }`}
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-bold">
+        <Link
+          to={isLoggedIn ? '/app' : '/'}
+          onClick={handleLogoClick}
+          className="flex items-center gap-2 font-bold"
+        >
           <div className="size-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground">
             P
           </div>

@@ -20,6 +20,14 @@ import {
   Sparkles,
   ChevronRight,
 } from 'lucide-react'
+import {
+  ExecutiveSummary,
+  FinancialMetrics,
+  Valuation,
+  MarketAnalysis,
+  RiskAnalysis,
+  TeamStrategy,
+} from '@/components/report-sections'
 
 export default function ReportAnalysis() {
   const [currentSection, setCurrentSection] = useState('executive-summary')
@@ -156,19 +164,7 @@ export default function ReportAnalysis() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                   >
-                    <Card className="border-primary/20">
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="flex items-center gap-2">
-                          <FileText className="size-5 text-primary" />
-                          Executive Summary
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">
-                          Loading executive summary...
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <ExecutiveSummary />
                   </motion.div>
                 </TabsContent>
 
@@ -178,19 +174,7 @@ export default function ReportAnalysis() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                   >
-                    <Card className="border-primary/20">
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="flex items-center gap-2">
-                          <BarChart3 className="size-5 text-primary" />
-                          Financial Metrics
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">
-                          Loading financial metrics...
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <FinancialMetrics />
                   </motion.div>
                 </TabsContent>
 
@@ -200,19 +184,7 @@ export default function ReportAnalysis() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                   >
-                    <Card className="border-primary/20">
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="flex items-center gap-2">
-                          <DollarSign className="size-5 text-primary" />
-                          Valuation & Investor Returns
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">
-                          Loading valuation data...
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <Valuation />
                   </motion.div>
                 </TabsContent>
 
@@ -222,19 +194,7 @@ export default function ReportAnalysis() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                   >
-                    <Card className="border-primary/20">
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="flex items-center gap-2">
-                          <LineChart className="size-5 text-primary" />
-                          Market & Competitive Landscape
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">
-                          Loading market analysis...
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <MarketAnalysis />
                   </motion.div>
                 </TabsContent>
 
@@ -244,19 +204,7 @@ export default function ReportAnalysis() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                   >
-                    <Card className="border-primary/20">
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="flex items-center gap-2">
-                          <AlertTriangle className="size-5 text-primary" />
-                          Risk Factors
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">
-                          Loading risk factors...
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <RiskAnalysis />
                   </motion.div>
                 </TabsContent>
 
@@ -266,19 +214,7 @@ export default function ReportAnalysis() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                   >
-                    <Card className="border-primary/20">
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="flex items-center gap-2">
-                          <Users className="size-5 text-primary" />
-                          Team & Strategy
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">
-                          Loading team information...
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <TeamStrategy />
                   </motion.div>
                 </TabsContent>
               </AnimatePresence>
