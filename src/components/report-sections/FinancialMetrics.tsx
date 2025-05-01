@@ -3,6 +3,7 @@ import { BarChart3 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { IncomeAnalysis } from '@/components/financial-statements/IncomeAnalysis'
 import { BalanceSheetAnalysis } from '@/components/financial-statements/balance-sheet/BalanceSheetAnalysis'
+import CashflowAnalysis from '@/components/financial-statements/CashflowAnalysis'
 import sampleData from '../../../data/sample.json'
 
 interface FinancialStatement {
@@ -13,6 +14,7 @@ interface FinancialStatement {
 interface SampleData {
   ConsolidatedStatementsOfIncomeOrComprehensiveIncome: FinancialStatement[]
   ConsolidatedBalanceSheets: FinancialStatement[]
+  ConsolidatedStatementsOfCashFlows: FinancialStatement[]
 }
 
 export function FinancialMetrics() {
@@ -46,6 +48,9 @@ export function FinancialMetrics() {
             />
             <BalanceSheetAnalysis
               data={typedSampleData.ConsolidatedBalanceSheets}
+            />
+            <CashflowAnalysis
+              data={typedSampleData.ConsolidatedStatementsOfCashFlows}
             />
           </div>
         </CardContent>
