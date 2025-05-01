@@ -1,0 +1,537 @@
+{
+  "ConsolidatedStatementsOfIncomeOrComprehensiveIncome": [
+    {
+      "item": "Net sales:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Products",
+      "2024": 294866,
+      "2023": 298085,
+      "2022": 316199
+    },
+    {
+      "item": "Services",
+      "2024": 96169,
+      "2023": 85200,
+      "2022": 78129
+    },
+    {
+      "item": "Total net sales",
+      "2024": 391035,
+      "2023": 383285,
+      "2022": 394328
+    },
+    {
+      "item": "Cost of sales:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Products",
+      "2024": 185233,
+      "2023": 189282,
+      "2022": 201471
+    },
+    {
+      "item": "Services",
+      "2024": 25119,
+      "2023": 24855,
+      "2022": 22075
+    },
+    {
+      "item": "Total cost of sales",
+      "2024": 210352,
+      "2023": 214137,
+      "2022": 223546
+    },
+    {
+      "item": "Gross margin",
+      "2024": 180683,
+      "2023": 169148,
+      "2022": 170782
+    },
+    {
+      "item": "Operating expenses:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Research and development",
+      "2024": 31370,
+      "2023": 29915,
+      "2022": 26251
+    },
+    {
+      "item": "Selling, general and administrative",
+      "2024": 26097,
+      "2023": 24932,
+      "2022": 25094
+    },
+    {
+      "item": "Total operating expenses",
+      "2024": 57467,
+      "2023": 54847,
+      "2022": 51345
+    },
+    {
+      "item": "Operating income",
+      "2024": 123216,
+      "2023": 114301,
+      "2022": 119437
+    },
+    {
+      "item": "Other income/(expense), net",
+      "2024": 269,
+      "2023": -565,
+      "2022": -334
+    },
+    {
+      "item": "Income before provision for income taxes",
+      "2024": 123485,
+      "2023": 113736,
+      "2022": 119103
+    },
+    {
+      "item": "Provision for income taxes",
+      "2024": 29749,
+      "2023": 16741,
+      "2022": 19300
+    },
+    {
+      "item": "Net income",
+      "2024": 93736,
+      "2023": 96995,
+      "2022": 99803
+    },
+    {
+      "item": "Earnings per share:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Basic",
+      "2024": 6.11,
+      "2023": 6.16,
+      "2022": 6.15
+    },
+    {
+      "item": "Diluted",
+      "2024": 6.08,
+      "2023": 6.13,
+      "2022": 6.11
+    },
+    {
+      "item": "Shares used in computing earnings per share:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Basic",
+      "2024": 15343783,
+      "2023": 15744231,
+      "2022": 16215963
+    },
+    {
+      "item": "Diluted",
+      "2024": 15408095,
+      "2023": 15812547,
+      "2022": 16325819
+    }
+  ],
+  "ConsolidatedBalanceSheets": [
+    {
+      "item": "ASSETS:",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Current assets:",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Cash and cash equivalents",
+      "2024": 29943,
+      "2023": 29965
+    },
+    {
+      "item": "Marketable securities",
+      "2024": 35228,
+      "2023": 31590
+    },
+    {
+      "item": "Accounts receivable, net",
+      "2024": 33410,
+      "2023": 29508
+    },
+    {
+      "item": "Vendor non-trade receivables",
+      "2024": 32833,
+      "2023": 31477
+    },
+    {
+      "item": "Inventories",
+      "2024": 7286,
+      "2023": 6331
+    },
+    {
+      "item": "Other current assets",
+      "2024": 14287,
+      "2023": 14695
+    },
+    {
+      "item": "Total current assets",
+      "2024": 152987,
+      "2023": 143566
+    },
+    {
+      "item": "Non-current assets:",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Marketable securities",
+      "2024": 91479,
+      "2023": 100544
+    },
+    {
+      "item": "Property, plant and equipment, net",
+      "2024": 45680,
+      "2023": 43715
+    },
+    {
+      "item": "Other non-current assets",
+      "2024": 74834,
+      "2023": 64758
+    },
+    {
+      "item": "Total non-current assets",
+      "2024": 211993,
+      "2023": 209017
+    },
+    {
+      "item": "Total assets",
+      "2024": 364980,
+      "2023": 352583
+    },
+    {
+      "item": "LIABILITIES AND SHAREHOLDERS\u2019 EQUITY:",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Current liabilities:",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Accounts payable",
+      "2024": 68960,
+      "2023": 62611
+    },
+    {
+      "item": "Other current liabilities",
+      "2024": 78304,
+      "2023": 58829
+    },
+    {
+      "item": "Deferred revenue",
+      "2024": 8249,
+      "2023": 8061
+    },
+    {
+      "item": "Commercial paper",
+      "2024": 9967,
+      "2023": 5985
+    },
+    {
+      "item": "Term debt",
+      "2024": 10912,
+      "2023": 9822
+    },
+    {
+      "item": "Total current liabilities",
+      "2024": 176392,
+      "2023": 145308
+    },
+    {
+      "item": "Non-current liabilities:",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Term debt",
+      "2024": 85750,
+      "2023": 95281
+    },
+    {
+      "item": "Other non-current liabilities",
+      "2024": 45888,
+      "2023": 49848
+    },
+    {
+      "item": "Total non-current liabilities",
+      "2024": 131638,
+      "2023": 145129
+    },
+    {
+      "item": "Total liabilities",
+      "2024": 308030,
+      "2023": 290437
+    },
+    {
+      "item": "Commitments and contingencies",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Shareholders\u2019 equity:",
+      "2024": null,
+      "2023": null
+    },
+    {
+      "item": "Common stock and additional paid-in capital, $0.00001 par value: 50,400,000 shares authorized; 15,116,786 and 15,550,061 shares issued and outstanding, respectively",
+      "2024": 83276,
+      "2023": 73812
+    },
+    {
+      "item": "Accumulated deficit",
+      "2024": -19154,
+      "2023": -214
+    },
+    {
+      "item": "Accumulated other comprehensive loss",
+      "2024": -7172,
+      "2023": -11452
+    },
+    {
+      "item": "Total shareholders\u2019 equity",
+      "2024": 56950,
+      "2023": 62146
+    },
+    {
+      "item": "Total liabilities and shareholders\u2019 equity",
+      "2024": 364980,
+      "2023": 352583
+    }
+  ],
+  "ConsolidatedStatementsOfCashFlows": [
+    {
+      "item": "Cash, cash equivalents, and restricted cash and cash equivalents, beginning balances",
+      "2024": 30737,
+      "2023": 24977,
+      "2022": 35929
+    },
+    {
+      "item": "Operating activities:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Net income",
+      "2024": 93736,
+      "2023": 96995,
+      "2022": 99803
+    },
+    {
+      "item": "Adjustments to reconcile net income to cash generated by operating activities:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Depreciation and amortization",
+      "2024": 11445,
+      "2023": 11519,
+      "2022": 11104
+    },
+    {
+      "item": "Share-based compensation expense",
+      "2024": 11688,
+      "2023": 10833,
+      "2022": 9038
+    },
+    {
+      "item": "Other",
+      "2024": -2266,
+      "2023": -2227,
+      "2022": 1006
+    },
+    {
+      "item": "Changes in operating assets and liabilities:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Accounts receivable, net",
+      "2024": -3788,
+      "2023": -1688,
+      "2022": -1823
+    },
+    {
+      "item": "Vendor non-trade receivables",
+      "2024": -1356,
+      "2023": 1271,
+      "2022": -7520
+    },
+    {
+      "item": "Inventories",
+      "2024": -1046,
+      "2023": -1618,
+      "2022": 1484
+    },
+    {
+      "item": "Other current and non-current assets",
+      "2024": -11731,
+      "2023": -5684,
+      "2022": -6499
+    },
+    {
+      "item": "Accounts payable",
+      "2024": 6020,
+      "2023": -1889,
+      "2022": 9448
+    },
+    {
+      "item": "Other current and non-current liabilities",
+      "2024": 15552,
+      "2023": 3031,
+      "2022": 6110
+    },
+    {
+      "item": "Cash generated by operating activities",
+      "2024": 118254,
+      "2023": 110543,
+      "2022": 122151
+    },
+    {
+      "item": "Investing activities:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Purchases of marketable securities",
+      "2024": -48656,
+      "2023": -29513,
+      "2022": -76923
+    },
+    {
+      "item": "Proceeds from maturities of marketable securities",
+      "2024": 51211,
+      "2023": 39686,
+      "2022": 29917
+    },
+    {
+      "item": "Proceeds from sales of marketable securities",
+      "2024": 11135,
+      "2023": 5828,
+      "2022": 37446
+    },
+    {
+      "item": "Payments for acquisition of property, plant and equipment",
+      "2024": -9447,
+      "2023": -10959,
+      "2022": -10708
+    },
+    {
+      "item": "Other",
+      "2024": -1308,
+      "2023": -1337,
+      "2022": -2086
+    },
+    {
+      "item": "Cash generated by/(used in) investing activities",
+      "2024": 2935,
+      "2023": 3705,
+      "2022": -22354
+    },
+    {
+      "item": "Financing activities:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Payments for taxes related to net share settlement of equity awards",
+      "2024": -5441,
+      "2023": -5431,
+      "2022": -6223
+    },
+    {
+      "item": "Payments for dividends and dividend equivalents",
+      "2024": -15234,
+      "2023": -15025,
+      "2022": -14841
+    },
+    {
+      "item": "Repurchases of common stock",
+      "2024": -94949,
+      "2023": -77550,
+      "2022": -89402
+    },
+    {
+      "item": "Proceeds from issuance of term debt, net",
+      "2024": null,
+      "2023": 5228,
+      "2022": 5465
+    },
+    {
+      "item": "Repayments of term debt",
+      "2024": -9958,
+      "2023": -11151,
+      "2022": -9543
+    },
+    {
+      "item": "Proceeds from/(Repayments of) commercial paper, net",
+      "2024": 3960,
+      "2023": -3978,
+      "2022": 3955
+    },
+    {
+      "item": "Other",
+      "2024": -361,
+      "2023": -581,
+      "2022": -160
+    },
+    {
+      "item": "Cash used in financing activities",
+      "2024": -121983,
+      "2023": -108488,
+      "2022": -110749
+    },
+    {
+      "item": "Increase/(Decrease) in cash, cash equivalents, and restricted cash and cash equivalents",
+      "2024": -794,
+      "2023": 5760,
+      "2022": -10952
+    },
+    {
+      "item": "Cash, cash equivalents, and restricted cash and cash equivalents, ending balances",
+      "2024": 29943,
+      "2023": 30737,
+      "2022": 24977
+    },
+    {
+      "item": "Supplemental cash flow disclosure:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Cash paid for income taxes, net",
+      "2024": 26102,
+      "2023": 18679,
+      "2022": 19573
+    }
+  ]
+}

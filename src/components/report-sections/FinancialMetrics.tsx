@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { BarChart3 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { IncomeAnalysis } from '@/components/financial-statements/IncomeAnalysis'
+import sampleData from '@/data/sample.json'
 
 export function FinancialMetrics() {
   return (
@@ -18,10 +20,18 @@ export function FinancialMetrics() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground mb-6">
             Detailed analysis of financial performance including revenue,
             expenses, and key financial ratios.
           </p>
+
+          <div className="space-y-8">
+            <IncomeAnalysis
+              data={
+                sampleData.ConsolidatedStatementsOfIncomeOrComprehensiveIncome
+              }
+            />
+          </div>
         </CardContent>
       </Card>
     </motion.div>
