@@ -8,9 +8,7 @@ import { useTheme } from '@/context/ThemeProvider'
 interface IncomeWaterfallProps {
   data: {
     item: string
-    2024: number | null
-    2023: number | null
-    2022: number | null
+    [key: string]: string | number | null
   }[]
 }
 

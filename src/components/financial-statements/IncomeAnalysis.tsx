@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { IncomeWaterfall } from './IncomeWaterfall'
 import { IncomeTrends } from './IncomeTrends'
 import { IncomeTable } from './IncomeTable'
+import { EPSAnalysis } from './EPSAnalysis'
 import { Eye, EyeOff } from 'lucide-react'
 
 interface IncomeAnalysisProps {
@@ -43,23 +43,12 @@ export function IncomeAnalysis({ data }: IncomeAnalysisProps) {
       </div>
 
       <div className="grid gap-6">
-        {showTable && (
-          <Card className="border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">
-                Income Statement Details
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <IncomeTable data={data} />
-            </CardContent>
-          </Card>
-        )}
-
+        {showTable && <IncomeTable data={data} />}
         <div className="grid gap-6 lg:grid-cols-2">
           <IncomeWaterfall data={data} />
           <IncomeTrends data={data} />
         </div>
+        <EPSAnalysis data={data} />
       </div>
     </div>
   )
