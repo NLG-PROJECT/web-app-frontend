@@ -72,14 +72,15 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
     thresholds: { good: number; warning: number },
     isInverse = false,
     statusColor: string,
+    key?: string,
   ): EChartsOption => {
     // Clamp value to min/max for display
     let displayValue = value
     if (!Number.isFinite(displayValue)) displayValue = min
     if (displayValue < min) displayValue = min
     if (displayValue > max) displayValue = max
-    // Pointer only hidden for NaN/Infinity
-    const showPointer = Number.isFinite(value)
+    // Always show pointer for Debt to Equity gauge, even if value is not finite
+    const showPointer = key === 'debtToEquity' ? true : Number.isFinite(value)
     // Calculate splitNumber for nice ticks (prefer 4 or 5 for small ranges)
     const range = max - min
     let splitNumber = 4
@@ -99,7 +100,7 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
           min,
           max,
           splitNumber,
-          radius: '90%',
+          radius: '80%',
           itemStyle: {
             color: statusColor,
             shadowColor: 'rgba(0,0,0,0.08)',
@@ -151,6 +152,7 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
           },
           axisTick: {
             distance: -15,
+            length: 4,
             splitNumber: 5,
             lineStyle: {
               width: 1,
@@ -159,7 +161,7 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
           },
           splitLine: {
             distance: -18,
-            length: 6,
+            length: 8,
             lineStyle: {
               width: 2,
               color: isDark ? '#475569' : '#94a3b8',
@@ -192,7 +194,7 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
           ],
         },
       ],
-      grid: { left: 0, right: 0, top: 0, bottom: 0 },
+      grid: { left: 20, right: 20, top: 30, bottom: 30 },
     }
   }
 
@@ -267,14 +269,18 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
             return (
               <div
                 key={key}
-                className="flex flex-col items-center bg-card rounded-xl shadow-sm p-6"
+                className="flex flex-col items-center bg-card rounded-xl shadow-sm px-4 py-8"
+                style={{ overflow: 'visible', minHeight: 320 }}
               >
                 <div className="text-3xl font-bold mb-2" style={{ color }}>
                   {Number.isFinite(config.value)
                     ? config.value.toFixed(2)
                     : 'N/A'}
                 </div>
-                <div className="w-full flex flex-col items-center">
+                <div
+                  className="w-full flex flex-col items-center"
+                  style={{ overflow: 'visible' }}
+                >
                   <ReactECharts
                     option={createGaugeOption(
                       config.value,
@@ -284,8 +290,14 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
                       config.thresholds,
                       config.isInverse,
                       color,
+                      key,
                     )}
-                    style={{ height: '180px', width: '100%' }}
+                    style={{
+                      height: '240px',
+                      width: '100%',
+                      minWidth: '180px',
+                      overflow: 'visible',
+                    }}
                     theme={isDark ? 'dark' : undefined}
                   />
                 </div>

@@ -40,18 +40,20 @@ export function LiabilityEquityFlow({ data }: LiabilityEquityFlowProps) {
       'Debt-to-Equity Ratio',
     ]
 
-    const seriesData = years.map((year) => {
+    const seriesData = years.map((year, idx) => {
       const totalLiabilities = findValue('Total liabilities', year)
       const totalEquity = findValue("Total shareholders' equity", year)
       const debtToEquity =
         totalEquity !== 0 ? totalLiabilities / totalEquity : 0
 
-      return {
-        Year: year,
-        'Total Liabilities': totalLiabilities,
-        'Total Equity': totalEquity,
-        'Debt-to-Equity Ratio': debtToEquity,
+      // Highlight the most recent year (last in sorted years) with a custom color
+      if (idx === years.length - 1) {
+        return {
+          value: [Number(year), totalLiabilities, totalEquity, debtToEquity],
+          lineStyle: { color: '#2563eb', width: 4, opacity: 1 }, // blue, thicker
+        }
       }
+      return [Number(year), totalLiabilities, totalEquity, debtToEquity]
     })
 
     return { dimensions, seriesData }
@@ -79,19 +81,15 @@ export function LiabilityEquityFlow({ data }: LiabilityEquityFlowProps) {
       formatter: (params: any) => {
         const data = params[0].data
         return `
-          <div style="font-weight: bold">${data.Year}</div>
-          <div>Total Liabilities: $${(
-            data['Total Liabilities'] / 1000000
-          ).toFixed(2)}M</div>
-          <div>Total Equity: $${(data['Total Equity'] / 1000000).toFixed(
-            2,
-          )}M</div>
-          <div>Debt-to-Equity: ${data['Debt-to-Equity Ratio'].toFixed(2)}</div>
+          <div style="font-weight: bold">${data[0]}</div>
+          <div>Total Liabilities: $${(data[1] / 1000000).toFixed(2)}M</div>
+          <div>Total Equity: $${(data[2] / 1000000).toFixed(2)}M</div>
+          <div>Debt-to-Equity: ${data[3].toFixed(2)}</div>
         `
       },
     },
     parallelAxis: [
-      { dim: 0, name: 'Year' },
+      { dim: 0, name: 'Year', type: 'value' },
       {
         dim: 1,
         name: 'Total Liabilities',
