@@ -2,9 +2,22 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { BarChart3 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { IncomeAnalysis } from '@/components/financial-statements/IncomeAnalysis'
-import sampleData from '@/data/sample.json'
+import { BalanceSheetAnalysis } from '@/components/financial-statements/balance-sheet/BalanceSheetAnalysis'
+import sampleData from '../../../data/sample.json'
+
+interface FinancialStatement {
+  item: string
+  [key: string]: string | number | null
+}
+
+interface SampleData {
+  ConsolidatedStatementsOfIncomeOrComprehensiveIncome: FinancialStatement[]
+  ConsolidatedBalanceSheets: FinancialStatement[]
+}
 
 export function FinancialMetrics() {
+  const typedSampleData = sampleData as SampleData
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -22,14 +35,17 @@ export function FinancialMetrics() {
         <CardContent>
           <p className="text-muted-foreground mb-6">
             Detailed analysis of financial performance including revenue,
-            expenses, and key financial ratios.
+            expenses, balance sheet composition, and key financial ratios.
           </p>
 
           <div className="space-y-8">
             <IncomeAnalysis
               data={
-                sampleData.ConsolidatedStatementsOfIncomeOrComprehensiveIncome
+                typedSampleData.ConsolidatedStatementsOfIncomeOrComprehensiveIncome
               }
+            />
+            <BalanceSheetAnalysis
+              data={typedSampleData.ConsolidatedBalanceSheets}
             />
           </div>
         </CardContent>

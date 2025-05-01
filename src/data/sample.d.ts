@@ -8,6 +8,7 @@ interface FinancialStatement {
 declare module '@/data/sample.json' {
     const value: {
         ConsolidatedStatementsOfIncomeOrComprehensiveIncome: FinancialStatement[];
+        ConsolidatedBalanceSheets: FinancialStatement[];
     };
     export default value;
 } 
