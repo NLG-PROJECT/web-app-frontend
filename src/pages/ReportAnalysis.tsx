@@ -34,10 +34,26 @@ export default function ReportAnalysis() {
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [hasReport, setHasReport] = useState(false)
   const [reportName, setReportName] = useState<string | null>(null)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [analysisError, setAnalysisError] = useState<string | null>(null)
 
-  const handleReportUpload = (fileName: string) => {
-    setReportName(fileName)
-    setHasReport(true)
+  const handleReportUpload = async (fileName: string) => {
+    try {
+      setIsAnalyzing(true)
+      setAnalysisError(null)
+
+      // Here you would typically make an API call to start the analysis
+      // For now, we'll just simulate a delay
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      setReportName(fileName)
+      setHasReport(true)
+    } catch (err) {
+      setAnalysisError('Failed to analyze report. Please try again.')
+      console.error('Analysis error:', err)
+    } finally {
+      setIsAnalyzing(false)
+    }
   }
 
   if (!hasReport) {
