@@ -1,0 +1,148 @@
+{
+  "ConsolidatedStatementsOfIncomeOrComprehensiveIncome": [
+    {
+      "item": "Net sales:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Products",
+      "2024": 294866,
+      "2023": 298085,
+      "2022": 316199
+    },
+    {
+      "item": "Services",
+      "2024": 96169,
+      "2023": 85200,
+      "2022": 78129
+    },
+    {
+      "item": "Total net sales",
+      "2024": 391035,
+      "2023": 383285,
+      "2022": 394328
+    },
+    {
+      "item": "Cost of sales:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Products",
+      "2024": 185233,
+      "2023": 189282,
+      "2022": 201471
+    },
+    {
+      "item": "Services",
+      "2024": 25119,
+      "2023": 24855,
+      "2022": 22075
+    },
+    {
+      "item": "Total cost of sales",
+      "2024": 210352,
+      "2023": 214137,
+      "2022": 223546
+    },
+    {
+      "item": "Gross margin",
+      "2024": 180683,
+      "2023": 169148,
+      "2022": 170782
+    },
+    {
+      "item": "Operating expenses:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Research and development",
+      "2024": 31370,
+      "2023": 29915,
+      "2022": 26251
+    },
+    {
+      "item": "Selling, general and administrative",
+      "2024": 26097,
+      "2023": 24932,
+      "2022": 25094
+    },
+    {
+      "item": "Total operating expenses",
+      "2024": 57467,
+      "2023": 54847,
+      "2022": 51345
+    },
+    {
+      "item": "Operating income",
+      "2024": 123216,
+      "2023": 114301,
+      "2022": 119437
+    },
+    {
+      "item": "Other income/(expense), net",
+      "2024": 269,
+      "2023": -565,
+      "2022": -334
+    },
+    {
+      "item": "Income before provision for income taxes",
+      "2024": 123485,
+      "2023": 113736,
+      "2022": 119103
+    },
+    {
+      "item": "Provision for income taxes",
+      "2024": 29749,
+      "2023": 16741,
+      "2022": 19300
+    },
+    {
+      "item": "Net income",
+      "2024": 93736,
+      "2023": 96995,
+      "2022": 99803
+    },
+    {
+      "item": "Earnings per share:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Basic",
+      "2024": 6.11,
+      "2023": 6.16,
+      "2022": 6.15
+    },
+    {
+      "item": "Diluted",
+      "2024": 6.08,
+      "2023": 6.13,
+      "2022": 6.11
+    },
+    {
+      "item": "Shares used in computing earnings per share:",
+      "2024": null,
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Basic",
+      "2024": 15343783,
+      "2023": 15744231,
+      "2022": 16215963
+    },
+    {
+      "item": "Diluted",
+      "2024": 15408095,
+      "2023": 15812547,
+      "2022": 16325819
+    }
+  ]
+}

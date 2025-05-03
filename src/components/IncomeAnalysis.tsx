@@ -1,0 +1,3 @@
+import React, { useMemo, useCallback, useState } from 'react'
+import { useTheme } from '@/context/ThemeProvider'
+// ... existing code ...
