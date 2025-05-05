@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Send, X, ChevronRight, MessageSquare, Phone, Mail } from 'lucide-react'
+import axios from 'axios'
 
 interface Message {
   id: string
@@ -25,6 +26,7 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   // Scroll to bottom when new messages arrive
@@ -47,24 +49,46 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
     setMessages((prev) => [...prev, userMessage])
     setInput('')
     setIsLoading(true)
+    setError(null)
 
-    // TODO: Implement AI response logic here
-    // This is a placeholder response
-    setTimeout(() => {
+    try {
+      console.log('Sending chat message:', input)
+      const response = await axios.post('/api/chat', {
+        message: input,
+        option: currentSection, // Using current section as the option
+      })
+
+      console.log('Chat response received:', response.data)
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: `I understand you're asking about ${input} in the ${
-          currentSection || 'report'
-        }. Here's what I found...`,
+        content:
+          response.data.response ||
+          "I apologize, but I couldn't process your request.",
         sender: 'ai',
         timestamp: new Date(),
         references: {
           section: currentSection,
         },
       }
+
       setMessages((prev) => [...prev, aiMessage])
+    } catch (err) {
+      console.error('Chat API error:', err)
+      setError('Failed to get response. Please try again.')
+
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content:
+          'Sorry, I encountered an error while processing your request. Please try again.',
+        sender: 'ai',
+        timestamp: new Date(),
+      }
+
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   return (
@@ -122,6 +146,13 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
         </div>
       </ScrollArea>
 
+      {/* Error Message */}
+      {error && (
+        <div className="px-4 py-2 text-sm text-destructive bg-destructive/10">
+          {error}
+        </div>
+      )}
+
       {/* Chat Input */}
       <form
         onSubmit={(e) => {
@@ -136,8 +167,9 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about this section..."
             className="flex-1"
+            disabled={isLoading}
           />
-          <Button type="submit" size="icon">
+          <Button type="submit" size="icon" disabled={isLoading}>
             <Send className="size-4" />
           </Button>
         </div>
