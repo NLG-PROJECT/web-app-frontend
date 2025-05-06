@@ -377,7 +377,7 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
           isOpen={showFactCheck}
           onClose={() => setShowFactCheck(false)}
           factCheck={factCheckResult}
-          pdfUrl="/data/samplepdf.pdf"
+          pdfUrl="/uploads/report.pdf"
         />
       )}
     </div>

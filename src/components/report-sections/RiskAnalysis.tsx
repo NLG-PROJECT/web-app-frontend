@@ -253,7 +253,7 @@ export function RiskAnalysis() {
           isOpen={showFactCheck}
           onClose={() => setShowFactCheck(false)}
           factCheck={factCheckResult.fact_check}
-          pdfUrl="/data/samplepdf.pdf"
+          pdfUrl="/uploads/report.pdf"
         />
       )}
     </motion.div>
