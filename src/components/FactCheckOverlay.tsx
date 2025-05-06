@@ -183,7 +183,8 @@ export function FactCheckOverlay({
             </div>
           ) : (
             // PDF Viewer
-            <div className="h-full">
+            <div className="h-full flex flex-col">
+              {/* PDF Controls */}
               <div className="flex items-center justify-between mb-4 px-4">
                 <div className="flex items-center gap-4">
                   <Button
@@ -230,10 +231,20 @@ export function FactCheckOverlay({
                   >
                     <ZoomIn className="h-4 w-4" />
                   </Button>
+                  <div className="w-px h-6 bg-border mx-2" />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowPDF(false)}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
 
-              <div className="flex justify-center">
+              {/* PDF Document */}
+              <div className="flex-1 overflow-auto">
                 {isLoading && (
                   <div className="flex items-center justify-center h-32">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
