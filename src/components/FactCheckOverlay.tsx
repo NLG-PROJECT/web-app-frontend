@@ -1,21 +1,20 @@
-import { useState, useEffect } from 'react'
-import { Document, Page, pdfjs } from 'react-pdf'
-import type { TextItem } from 'pdfjs-dist/types/src/display/api'
 import {
-  X,
-  ChevronLeft,
-  ChevronRight,
-  ZoomIn,
-  ZoomOut,
-  FileText,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import {
   CheckCircle2,
   AlertCircle,
   XCircle,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
 } from 'lucide-react'
-import { Button } from './ui/button'
-
-// Set up the worker for react-pdf
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`
+import { useState } from 'react'
+import { cn } from '@/lib/utils'
 
 interface FactCheckResult {
   claim: string
@@ -28,7 +27,7 @@ interface FactCheckResult {
 interface FactCheckOverlayProps {
   isOpen: boolean
   onClose: () => void
-  factCheck: FactCheckResult
+  factCheck: FactCheckResult[]
   pdfUrl: string
 }
 
@@ -38,61 +37,19 @@ export function FactCheckOverlay({
   factCheck,
   pdfUrl,
 }: FactCheckOverlayProps) {
-  const [showPDF, setShowPDF] = useState(false)
-  const [numPages, setNumPages] = useState<number | null>(null)
-  const [currentPage, setCurrentPage] = useState(factCheck?.page || 1)
-  const [scale, setScale] = useState(1.0)
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [highlightedTexts, setHighlightedTexts] = useState<string[]>([])
+  const [expandedClaims, setExpandedClaims] = useState<Set<number>>(new Set())
 
-  // Process evidence text for highlighting
-  useEffect(() => {
-    if (factCheck?.evidence) {
-      // Replace literal \n with actual newline and split
-      const texts = factCheck.evidence
-        .replace(/\\n/g, '\n') // Replace all \n with actual newlines
-        .split('\n') // Split by actual newlines
-        .map((line) => line.trim())
-        .filter((line) => {
-          // Count words in the line
-          const wordCount = line.split(/\s+/).length
-          // Only keep lines with 3 or more words
-          return wordCount >= 3 && line.length > 0
-        })
-
-      console.log('Evidence texts to highlight:', {
-        original: factCheck.evidence,
-        processed: texts,
-        page: factCheck.page,
-      })
-      setHighlightedTexts(texts)
+  const toggleClaim = (index: number) => {
+    const newExpanded = new Set(expandedClaims)
+    if (newExpanded.has(index)) {
+      newExpanded.delete(index)
+    } else {
+      newExpanded.add(index)
     }
-  }, [factCheck?.evidence])
+    setExpandedClaims(newExpanded)
+  }
 
-  // Debug logs for component lifecycle
-  useEffect(() => {
-    console.log('FactCheckOverlay mounted/updated:', {
-      isOpen,
-      showPDF,
-      pdfUrl,
-      factCheck,
-      highlightedTexts,
-    })
-  }, [isOpen, showPDF, pdfUrl, factCheck, highlightedTexts])
-
-  // Reset state when overlay closes
-  useEffect(() => {
-    if (!isOpen) {
-      setShowPDF(false)
-      setError(null)
-      setIsLoading(false)
-    }
-  }, [isOpen])
-
-  if (!isOpen || !factCheck) return null
-
-  const getFactCheckIcon = (score: number) => {
+  const getScoreIcon = (score: number) => {
     if (score >= 0.75) {
       return <CheckCircle2 className="size-4 text-green-500" />
     } else if (score >= 0.5) {
@@ -104,255 +61,90 @@ export function FactCheckOverlay({
     }
   }
 
-  const formatEvidence = (evidence: string) => {
-    if (!evidence) return null
-    return evidence.split('\\n').map((line, index) => (
-      <p key={index} className="mb-2">
-        {line}
-      </p>
-    ))
+  const getScoreColor = (score: number) => {
+    if (score >= 0.75) return 'text-green-500'
+    if (score >= 0.5) return 'text-orange-500'
+    if (score >= 0.25) return 'text-yellow-500'
+    return 'text-red-500'
   }
 
-  const handlePDFLoadSuccess = ({ numPages }: { numPages: number }) => {
-    console.log('PDF loaded successfully:', {
-      numPages,
-      currentPage,
-      highlightedTexts,
-      targetPage: factCheck.page,
-    })
-    setNumPages(numPages)
-    setIsLoading(false)
-  }
-
-  const handlePDFLoadError = (error: Error) => {
-    console.error('Error loading PDF:', {
-      error,
-      pdfUrl,
-      currentPage,
-    })
-    setError('Failed to load PDF')
-    setIsLoading(false)
-  }
-
-  // Custom text renderer to highlight evidence
-  const customTextRenderer = (
-    props: TextItem & {
-      pageIndex: number
-      pageNumber: number
-      itemIndex: number
-    },
-  ) => {
-    const { str, pageNumber } = props
-
-    // Only process text on the target page
-    if (pageNumber === factCheck.page) {
-      // Clean the text for comparison
-      const cleanText = str.trim().toLowerCase()
-
-      const matches = highlightedTexts.some((highlight) => {
-        const cleanHighlight = highlight.trim().toLowerCase()
-        const matches = cleanText.includes(cleanHighlight)
-        if (matches) {
-          console.log('Found match:', {
-            text: cleanText,
-            highlight: cleanHighlight,
-            originalText: str,
-          })
-        }
-        return matches
-      })
-
-      if (matches) {
-        console.log('Highlighting text:', str)
-        return `<span style="background-color: rgba(255, 255, 0, 0.5); color: black; font-weight: bold; opacity: 1;">${str}</span>`
-      }
-    }
-    return `<span style="color: black; opacity: 1;">${str}</span>`
+  const getScoreLabel = (score: number) => {
+    if (score >= 0.75) return 'High confidence'
+    if (score >= 0.5) return 'Moderate confidence'
+    if (score >= 0.25) return 'Low confidence'
+    return 'Unverified'
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div
-        className={`bg-background w-[80%] h-[90%] rounded-lg shadow-lg flex flex-col transition-all duration-300 ${
-          showPDF ? 'pt-16' : ''
-        }`}
-      >
-        {/* Compact Header (shown when PDF is visible) */}
-        {showPDF && (
-          <div className="absolute top-0 left-0 right-0 h-16 bg-background border-b flex items-center justify-between px-4 z-10">
-            <div className="flex items-center gap-4">
-              {getFactCheckIcon(factCheck.score)}
-              <div className="flex items-center gap-2">
-                <span className="font-medium">
-                  Score: {(factCheck.score * 100).toFixed(1)}%
-                </span>
-                <span className="text-muted-foreground">•</span>
-                <span className="capitalize">{factCheck.status}</span>
-                <span className="text-muted-foreground">•</span>
-                <span>Page {factCheck.page}</span>
-              </div>
-            </div>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        )}
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            Fact Check Results
+            <span className="text-sm font-normal text-muted-foreground">
+              ({factCheck.length} claims verified)
+            </span>
+          </DialogTitle>
+        </DialogHeader>
 
-        {/* Main Content */}
-        <div className={`flex-1 overflow-auto ${showPDF ? 'pt-4' : 'p-6'}`}>
-          {!showPDF ? (
-            // Fact Check Details View
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold">
-                    Fact Check Results
-                  </span>
-                  {getFactCheckIcon(factCheck.score)}
+        <div className="space-y-4">
+          {factCheck.map((claim, index) => (
+            <div
+              key={index}
+              className="rounded-lg border bg-card text-card-foreground shadow-sm"
+            >
+              <div
+                className="flex items-center justify-between p-4 cursor-pointer"
+                onClick={() => toggleClaim(index)}
+              >
+                <div className="flex items-center gap-3">
+                  {getScoreIcon(claim.score)}
+                  <div>
+                    <p className="font-medium">{claim.claim}</p>
+                    <p className={cn('text-sm', getScoreColor(claim.score))}>
+                      {getScoreLabel(claim.score)} (
+                      {Math.round(claim.score * 100)}%)
+                    </p>
+                  </div>
                 </div>
-                <Button variant="ghost" size="icon" onClick={onClose}>
-                  <X className="h-4 w-4" />
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  {expandedClaims.has(index) ? (
+                    <ChevronUp className="size-4" />
+                  ) : (
+                    <ChevronDown className="size-4" />
+                  )}
                 </Button>
               </div>
 
-              <div className="space-y-2">
-                <h4 className="font-medium">Claim</h4>
-                <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md">
-                  {factCheck.claim}
-                </p>
-              </div>
+              {expandedClaims.has(index) && (
+                <div className="px-4 pb-4 space-y-4">
+                  <div className="rounded-md bg-muted p-3">
+                    <h4 className="text-sm font-medium mb-2">Evidence</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {claim.evidence}
+                    </p>
+                  </div>
 
-              <div className="space-y-2">
-                <h4 className="font-medium">Evidence</h4>
-                <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md">
-                  {formatEvidence(factCheck.evidence)}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      Found on page {claim.page}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => window.open(pdfUrl, '_blank')}
+                    >
+                      <ExternalLink className="size-3" />
+                      View in PDF
+                    </Button>
+                  </div>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-4 border-t">
-                <span className="text-sm text-muted-foreground">
-                  Page {factCheck.page}
-                </span>
-                <Button
-                  onClick={() => {
-                    console.log('Switching to PDF view:', {
-                      pdfUrl,
-                      page: factCheck.page,
-                    })
-                    setIsLoading(true)
-                    setShowPDF(true)
-                  }}
-                  className="flex items-center gap-2"
-                >
-                  <FileText className="size-4" />
-                  Confirm in Document
-                </Button>
-              </div>
+              )}
             </div>
-          ) : (
-            // PDF Viewer
-            <div className="h-full flex flex-col">
-              {/* PDF Controls */}
-              <div className="flex items-center justify-between mb-4 px-4">
-                <div className="flex items-center gap-4">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.max(1, prev - 1))
-                    }
-                    disabled={currentPage <= 1}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <span className="text-sm">
-                    Page {currentPage} of {numPages || '?'}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      setCurrentPage((prev) =>
-                        Math.min(numPages || prev, prev + 1),
-                      )
-                    }
-                    disabled={currentPage >= (numPages || currentPage)}
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      setScale((prev) => Math.max(0.5, prev - 0.1))
-                    }
-                  >
-                    <ZoomOut className="h-4 w-4" />
-                  </Button>
-                  <span className="text-sm">{Math.round(scale * 100)}%</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setScale((prev) => Math.min(2, prev + 0.1))}
-                  >
-                    <ZoomIn className="h-4 w-4" />
-                  </Button>
-                  <div className="w-px h-6 bg-border mx-2" />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setShowPDF(false)}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* PDF Document */}
-              <div className="flex-1 overflow-auto">
-                {isLoading && (
-                  <div className="flex items-center justify-center h-32">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                  </div>
-                )}
-                {error && (
-                  <div className="text-red-500 p-4 text-center">
-                    {error}
-                    <div className="text-sm text-muted-foreground mt-2">
-                      Please check if the PDF file exists and is accessible.
-                    </div>
-                  </div>
-                )}
-                <Document
-                  file={pdfUrl}
-                  onLoadSuccess={handlePDFLoadSuccess}
-                  onLoadError={handlePDFLoadError}
-                  className="flex justify-center"
-                  loading={
-                    <div className="flex items-center justify-center h-32">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                    </div>
-                  }
-                >
-                  <div className="p-8 bg-muted/20 rounded-lg">
-                    <Page
-                      pageNumber={currentPage}
-                      scale={scale}
-                      className="shadow-lg"
-                      renderTextLayer={true}
-                      renderAnnotationLayer={true}
-                      customTextRenderer={customTextRenderer}
-                    />
-                  </div>
-                </Document>
-              </div>
-            </div>
-          )}
+          ))}
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }
