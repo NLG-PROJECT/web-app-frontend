@@ -7,7 +7,7 @@ import {
   XCircle,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { Button } from '@/components/ui/button'
 import { FactCheckOverlay } from '@/components/FactCheckOverlay'
@@ -32,11 +32,20 @@ interface FactCheckResponse {
 // Cache keys for session storage
 const MARKET_SUMMARY_CACHE_KEY = 'market_summary_cache'
 const MARKET_FACT_CHECK_CACHE_KEY = 'market_fact_check_cache'
+const MARKET_INITIAL_FETCH_KEY = 'market_initial_fetch'
 
 export function MarketAnalysis() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(() => {
+    const cachedData = sessionStorage.getItem(MARKET_SUMMARY_CACHE_KEY)
+    return !cachedData
+  })
   const [error, setError] = useState<string | null>(null)
-  const [marketSummary, setMarketSummary] = useState<MarketSummary | null>(null)
+  const [marketSummary, setMarketSummary] = useState<MarketSummary | null>(
+    () => {
+      const cachedData = sessionStorage.getItem(MARKET_SUMMARY_CACHE_KEY)
+      return cachedData ? JSON.parse(cachedData) : null
+    },
+  )
   const [isFactChecking, setIsFactChecking] = useState(false)
   const [
     factCheckResult,
@@ -48,37 +57,32 @@ export function MarketAnalysis() {
     setSelectedFactCheck,
   ] = useState<FactCheckResult | null>(null)
 
-  useEffect(() => {
-    const fetchMarketSummary = async () => {
-      try {
-        // Check session storage first
-        const cachedData = sessionStorage.getItem(MARKET_SUMMARY_CACHE_KEY)
-        if (cachedData) {
-          const parsedData = JSON.parse(cachedData)
-          setMarketSummary(parsedData)
-          setIsLoading(false)
-          return
-        }
+  const fetchMarketSummary = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const response = await axios.post(
+        'http://127.0.0.1:8000/generate-market-summary',
+      )
+      const data = response.data
 
-        setIsLoading(true)
-        setError(null)
-        const response = await axios.post(
-          'http://127.0.0.1:8000/generate-market-summary',
-        )
-        const data = response.data
-
-        // Store in session storage
-        sessionStorage.setItem(MARKET_SUMMARY_CACHE_KEY, JSON.stringify(data))
-        setMarketSummary(data)
-      } catch (err) {
-        console.error('Error fetching market summary:', err)
-        setError('Failed to load market analysis. Please try again later.')
-      } finally {
-        setIsLoading(false)
-      }
+      // Store in session storage
+      sessionStorage.setItem(MARKET_SUMMARY_CACHE_KEY, JSON.stringify(data))
+      setMarketSummary(data)
+    } catch (err) {
+      console.error('Error fetching market summary:', err)
+      setError('Failed to load market analysis. Please try again later.')
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    fetchMarketSummary()
+  useEffect(() => {
+    const hasInitialFetch = sessionStorage.getItem(MARKET_INITIAL_FETCH_KEY)
+    if (!hasInitialFetch) {
+      fetchMarketSummary()
+      sessionStorage.setItem(MARKET_INITIAL_FETCH_KEY, 'true')
+    }
   }, [])
 
   const handleFactCheck = async () => {
@@ -168,31 +172,50 @@ export function MarketAnalysis() {
             <LineChart className="size-5 text-primary" />
             Market Analysis
           </CardTitle>
-          {marketSummary && (
+          <div className="flex gap-2">
+            {marketSummary && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleFactCheck}
+                disabled={isFactChecking}
+                className="gap-2"
+              >
+                {isFactChecking ? (
+                  <>
+                    <Loader2 className="size-3 animate-spin" />
+                    Fact-checking...
+                  </>
+                ) : factCheckResult ? (
+                  <>
+                    {getFactCheckIcon(
+                      getAverageScore(factCheckResult.fact_check),
+                    )}
+                    View details
+                  </>
+                ) : (
+                  'Fact-check analysis'
+                )}
+              </Button>
+            )}
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
-              onClick={handleFactCheck}
-              disabled={isFactChecking}
+              onClick={() => {
+                sessionStorage.removeItem(MARKET_SUMMARY_CACHE_KEY)
+                sessionStorage.removeItem(MARKET_FACT_CHECK_CACHE_KEY)
+                setMarketSummary(null)
+                setFactCheckResult(null)
+                setShowFactCheck(false)
+                setIsLoading(true)
+                fetchMarketSummary()
+              }}
               className="gap-2"
             >
-              {isFactChecking ? (
-                <>
-                  <Loader2 className="size-3 animate-spin" />
-                  Fact-checking...
-                </>
-              ) : factCheckResult ? (
-                <>
-                  {getFactCheckIcon(
-                    getAverageScore(factCheckResult.fact_check),
-                  )}
-                  View details
-                </>
-              ) : (
-                'Fact-check analysis'
-              )}
+              <Loader2 className="size-3" />
+              Resync
             </Button>
-          )}
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">

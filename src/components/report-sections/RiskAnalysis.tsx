@@ -32,11 +32,18 @@ interface FactCheckResponse {
 // Cache keys for session storage
 const RISK_SUMMARY_CACHE_KEY = 'risk_summary_cache'
 const RISK_FACT_CHECK_CACHE_KEY = 'risk_fact_check_cache'
+const RISK_INITIAL_FETCH_KEY = 'risk_initial_fetch'
 
 export function RiskAnalysis() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(() => {
+    const cachedData = sessionStorage.getItem(RISK_SUMMARY_CACHE_KEY)
+    return !cachedData
+  })
   const [error, setError] = useState<string | null>(null)
-  const [riskSummary, setRiskSummary] = useState<RiskSummary | null>(null)
+  const [riskSummary, setRiskSummary] = useState<RiskSummary | null>(() => {
+    const cachedData = sessionStorage.getItem(RISK_SUMMARY_CACHE_KEY)
+    return cachedData ? JSON.parse(cachedData) : null
+  })
   const [isFactChecking, setIsFactChecking] = useState(false)
   const [
     factCheckResult,
@@ -48,37 +55,32 @@ export function RiskAnalysis() {
     setSelectedFactCheck,
   ] = useState<FactCheckResult | null>(null)
 
-  useEffect(() => {
-    const fetchRiskSummary = async () => {
-      try {
-        // Check session storage first
-        const cachedData = sessionStorage.getItem(RISK_SUMMARY_CACHE_KEY)
-        if (cachedData) {
-          const parsedData = JSON.parse(cachedData)
-          setRiskSummary(parsedData)
-          setIsLoading(false)
-          return
-        }
+  const fetchRiskSummary = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const response = await axios.post(
+        'http://127.0.0.1:8000/generate-risk-factors',
+      )
+      const data = response.data
 
-        setIsLoading(true)
-        setError(null)
-        const response = await axios.post(
-          'http://127.0.0.1:8000/generate-risk-factors',
-        )
-        const data = response.data
-
-        // Store in session storage
-        sessionStorage.setItem(RISK_SUMMARY_CACHE_KEY, JSON.stringify(data))
-        setRiskSummary(data)
-      } catch (err) {
-        console.error('Error fetching risk summary:', err)
-        setError('Failed to load risk analysis. Please try again later.')
-      } finally {
-        setIsLoading(false)
-      }
+      // Store in session storage
+      sessionStorage.setItem(RISK_SUMMARY_CACHE_KEY, JSON.stringify(data))
+      setRiskSummary(data)
+    } catch (err) {
+      console.error('Error fetching risk summary:', err)
+      setError('Failed to load risk analysis. Please try again later.')
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    fetchRiskSummary()
+  useEffect(() => {
+    const hasInitialFetch = sessionStorage.getItem(RISK_INITIAL_FETCH_KEY)
+    if (!hasInitialFetch) {
+      fetchRiskSummary()
+      sessionStorage.setItem(RISK_INITIAL_FETCH_KEY, 'true')
+    }
   }, [])
 
   const handleFactCheck = async () => {
@@ -168,31 +170,50 @@ export function RiskAnalysis() {
             <AlertTriangle className="size-5 text-primary" />
             Risk Analysis
           </CardTitle>
-          {riskSummary && (
+          <div className="flex gap-2">
+            {riskSummary && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleFactCheck}
+                disabled={isFactChecking}
+                className="gap-2"
+              >
+                {isFactChecking ? (
+                  <>
+                    <Loader2 className="size-3 animate-spin" />
+                    Fact-checking...
+                  </>
+                ) : factCheckResult ? (
+                  <>
+                    {getFactCheckIcon(
+                      getAverageScore(factCheckResult.fact_check),
+                    )}
+                    View details
+                  </>
+                ) : (
+                  'Fact-check analysis'
+                )}
+              </Button>
+            )}
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
-              onClick={handleFactCheck}
-              disabled={isFactChecking}
+              onClick={() => {
+                sessionStorage.removeItem(RISK_SUMMARY_CACHE_KEY)
+                sessionStorage.removeItem(RISK_FACT_CHECK_CACHE_KEY)
+                setRiskSummary(null)
+                setFactCheckResult(null)
+                setShowFactCheck(false)
+                setIsLoading(true)
+                fetchRiskSummary()
+              }}
               className="gap-2"
             >
-              {isFactChecking ? (
-                <>
-                  <Loader2 className="size-3 animate-spin" />
-                  Fact-checking...
-                </>
-              ) : factCheckResult ? (
-                <>
-                  {getFactCheckIcon(
-                    getAverageScore(factCheckResult.fact_check),
-                  )}
-                  View details
-                </>
-              ) : (
-                'Fact-check analysis'
-              )}
+              <Loader2 className="size-3" />
+              Resync
             </Button>
-          )}
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
