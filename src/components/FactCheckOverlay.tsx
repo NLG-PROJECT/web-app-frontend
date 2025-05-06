@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
+import type { TextItem } from 'pdfjs-dist/types/src/display/api'
 import {
   X,
   ChevronLeft,
@@ -43,6 +44,31 @@ export function FactCheckOverlay({
   const [scale, setScale] = useState(1.0)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [highlightedTexts, setHighlightedTexts] = useState<string[]>([])
+
+  // Process evidence text for highlighting
+  useEffect(() => {
+    if (factCheck?.evidence) {
+      // Replace literal \n with actual newline and split
+      const texts = factCheck.evidence
+        .replace(/\\n/g, '\n') // Replace all \n with actual newlines
+        .split('\n') // Split by actual newlines
+        .map((line) => line.trim())
+        .filter((line) => {
+          // Count words in the line
+          const wordCount = line.split(/\s+/).length
+          // Only keep lines with 3 or more words
+          return wordCount >= 3 && line.length > 0
+        })
+
+      console.log('Evidence texts to highlight:', {
+        original: factCheck.evidence,
+        processed: texts,
+        page: factCheck.page,
+      })
+      setHighlightedTexts(texts)
+    }
+  }, [factCheck?.evidence])
 
   // Debug logs for component lifecycle
   useEffect(() => {
@@ -51,8 +77,9 @@ export function FactCheckOverlay({
       showPDF,
       pdfUrl,
       factCheck,
+      highlightedTexts,
     })
-  }, [isOpen, showPDF, pdfUrl, factCheck])
+  }, [isOpen, showPDF, pdfUrl, factCheck, highlightedTexts])
 
   // Reset state when overlay closes
   useEffect(() => {
@@ -87,7 +114,12 @@ export function FactCheckOverlay({
   }
 
   const handlePDFLoadSuccess = ({ numPages }: { numPages: number }) => {
-    console.log('PDF loaded successfully:', { numPages, currentPage })
+    console.log('PDF loaded successfully:', {
+      numPages,
+      currentPage,
+      highlightedTexts,
+      targetPage: factCheck.page,
+    })
     setNumPages(numPages)
     setIsLoading(false)
   }
@@ -100,6 +132,42 @@ export function FactCheckOverlay({
     })
     setError('Failed to load PDF')
     setIsLoading(false)
+  }
+
+  // Custom text renderer to highlight evidence
+  const customTextRenderer = (
+    props: TextItem & {
+      pageIndex: number
+      pageNumber: number
+      itemIndex: number
+    },
+  ) => {
+    const { str, pageNumber } = props
+
+    // Only process text on the target page
+    if (pageNumber === factCheck.page) {
+      // Clean the text for comparison
+      const cleanText = str.trim().toLowerCase()
+
+      const matches = highlightedTexts.some((highlight) => {
+        const cleanHighlight = highlight.trim().toLowerCase()
+        const matches = cleanText.includes(cleanHighlight)
+        if (matches) {
+          console.log('Found match:', {
+            text: cleanText,
+            highlight: cleanHighlight,
+            originalText: str,
+          })
+        }
+        return matches
+      })
+
+      if (matches) {
+        console.log('Highlighting text:', str)
+        return `<span style="background-color: rgba(255, 255, 0, 0.5); color: black; font-weight: bold; opacity: 1;">${str}</span>`
+      }
+    }
+    return `<span style="color: black; opacity: 1;">${str}</span>`
   }
 
   return (
@@ -275,6 +343,7 @@ export function FactCheckOverlay({
                     className="shadow-lg"
                     renderTextLayer={true}
                     renderAnnotationLayer={true}
+                    customTextRenderer={customTextRenderer}
                   />
                 </Document>
               </div>
