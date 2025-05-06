@@ -48,6 +48,7 @@ export function FactCheckOverlay({
   const [scale, setScale] = useState(1.0)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [currentClaimEvidence, setCurrentClaimEvidence] = useState<string[]>([])
 
   const toggleClaim = (index: number) => {
     const newExpanded = new Set(expandedClaims)
@@ -85,7 +86,14 @@ export function FactCheckOverlay({
     return 'Unverified'
   }
 
-  const handleViewDocument = (page: number) => {
+  const handleViewDocument = (page: number, evidence: string) => {
+    // Process evidence text into searchable chunks
+    const processedEvidence = evidence
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0)
+
+    setCurrentClaimEvidence(processedEvidence)
     setCurrentPage(page)
     setShowPDF(true)
     setIsLoading(true)
@@ -110,7 +118,17 @@ export function FactCheckOverlay({
     },
   ) => {
     const { str, pageNumber } = props
-    return `<span style="color: black; opacity: 1;">${str}</span>`
+
+    // Check if this text matches any of our evidence chunks
+    const isMatch = currentClaimEvidence.some((evidence) =>
+      str.toLowerCase().includes(evidence.toLowerCase()),
+    )
+
+    if (isMatch) {
+      return `<span style="background-color: rgba(255, 255, 0, 0.3); color: black; font-weight: 500;">${str}</span>`
+    }
+
+    return `<span style="color: black;">${str}</span>`
   }
 
   return (
@@ -174,7 +192,9 @@ export function FactCheckOverlay({
                         variant="outline"
                         size="sm"
                         className="gap-2"
-                        onClick={() => handleViewDocument(claim.page)}
+                        onClick={() =>
+                          handleViewDocument(claim.page, claim.evidence)
+                        }
                       >
                         <FileText className="size-3" />
                         View document
