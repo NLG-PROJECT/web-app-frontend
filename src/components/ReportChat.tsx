@@ -2,7 +2,18 @@ import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Send, X, ChevronRight, MessageSquare, Phone, Mail } from 'lucide-react'
+import {
+  Send,
+  X,
+  ChevronRight,
+  MessageSquare,
+  Phone,
+  Mail,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  XCircle,
+} from 'lucide-react'
 import axios from 'axios'
 
 interface Message {
@@ -10,6 +21,13 @@ interface Message {
   content: string
   sender: 'user' | 'ai'
   timestamp: Date
+  isFactChecking?: boolean
+  factCheckResult?: {
+    score: number
+    status: string
+    evidence: string
+    page: number
+  }
   references?: {
     section?: string
     metric?: string
@@ -67,9 +85,6 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
           "I apologize, but I couldn't process your request.",
         sender: 'ai',
         timestamp: new Date(),
-        references: {
-          section: currentSection,
-        },
       }
 
       setMessages((prev) => [...prev, aiMessage])
@@ -88,6 +103,61 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
       setMessages((prev) => [...prev, errorMessage])
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleFactCheck = async (messageId: string) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === messageId ? { ...msg, isFactChecking: true } : msg,
+      ),
+    )
+
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/fact-check',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          statement: messages.find((m) => m.id === messageId)?.content,
+        },
+      })
+
+      console.log('Fact check response:', response.data)
+
+      // Update the message with fact check results
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === messageId
+            ? {
+                ...msg,
+                isFactChecking: false,
+                factCheckResult: response.data.fact_check[0],
+              }
+            : msg,
+        ),
+      )
+    } catch (err) {
+      console.error('Fact check error:', err)
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === messageId ? { ...msg, isFactChecking: false } : msg,
+        ),
+      )
+    }
+  }
+
+  const getFactCheckIcon = (score: number) => {
+    if (score >= 0.75) {
+      return <CheckCircle2 className="size-3 text-green-500" />
+    } else if (score >= 0.5) {
+      return <CheckCircle2 className="size-3 text-orange-500" />
+    } else if (score >= 0.25) {
+      return <AlertCircle className="size-3 text-yellow-500" />
+    } else {
+      return <XCircle className="size-3 text-red-500" />
     }
   }
 
@@ -128,6 +198,27 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
                   <div className="mt-2 text-xs opacity-70">
                     Reference: {message.references.section}
                   </div>
+                )}
+                {message.sender === 'ai' && (
+                  <button
+                    onClick={() => handleFactCheck(message.id)}
+                    disabled={message.isFactChecking}
+                    className="mt-2 text-xs text-muted-foreground hover:text-primary hover:underline transition-colors flex items-center gap-1"
+                  >
+                    {message.isFactChecking ? (
+                      <>
+                        <Loader2 className="size-3 animate-spin" />
+                        Fact-checking...
+                      </>
+                    ) : message.factCheckResult ? (
+                      <>
+                        {getFactCheckIcon(message.factCheckResult.score)}
+                        View details
+                      </>
+                    ) : (
+                      'Fact-check response'
+                    )}
+                  </button>
                 )}
               </div>
             </div>
