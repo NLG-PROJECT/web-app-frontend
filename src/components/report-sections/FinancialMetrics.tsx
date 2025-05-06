@@ -8,13 +8,18 @@ import sampleData from '../../../data/sample.json'
 
 interface FinancialStatement {
   item: string
-  [key: string]: string | number | null
+  [year: string]: string | number | null
 }
 
 interface SampleData {
   ConsolidatedStatementsOfIncomeOrComprehensiveIncome: FinancialStatement[]
-  ConsolidatedBalanceSheets: FinancialStatement[]
   ConsolidatedStatementsOfCashFlows: FinancialStatement[]
+  ConsolidatedBalanceSheets: {
+    flattened: FinancialStatement[]
+    assets: FinancialStatement[]
+    liabilities: FinancialStatement[]
+    derivatives?: FinancialStatement[]
+  }
 }
 
 export function FinancialMetrics() {

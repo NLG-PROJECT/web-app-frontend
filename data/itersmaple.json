@@ -451,476 +451,238 @@
     "2022": "Dec 31, 2022",
     "2021": "Dec 25, 2021"
   },
-  "ConsolidatedBalanceSheets": {
-    "flattened": [
-      {
-        "item": "Current assets:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Cash and cash equivalents",
-        "2023": 7079.0,
-        "2022": 11144.0
-      },
-      {
-        "item": "Short-term investments",
-        "2023": 17955.0,
-        "2022": 17194.0
-      },
-      {
-        "item": "Accounts receivable, net",
-        "2023": 3402.0,
-        "2022": 4133.0
-      },
-      {
-        "item": "Inventories",
-        "2023": 11127.0,
-        "2022": 13224.0
-      },
-      {
-        "item": "Other current assets",
-        "2023": 3706.0,
-        "2022": 4712.0
-      },
-      {
-        "item": "Total current assets",
-        "2023": 43269.0,
-        "2022": 50407.0
-      },
-      {
-        "item": "Property, plant, and equipment, net",
-        "2023": 96647.0,
-        "2022": 80860.0
-      },
-      {
-        "item": "Equity investments",
-        "2023": 5829.0,
-        "2022": 5912.0
-      },
-      {
-        "item": "Goodwill",
-        "2023": 27591.0,
-        "2022": 27591.0
-      },
-      {
-        "item": "Identified intangible assets, net",
-        "2023": 4589.0,
-        "2022": 6018.0
-      },
-      {
-        "item": "Other long-term assets",
-        "2023": 13647.0,
-        "2022": 11315.0
-      },
-      {
-        "item": "Total assets",
-        "2023": 191572.0,
-        "2022": 182103.0
-      },
-      {
-        "item": "Liabilities and stockholders' equity",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Current liabilities:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Short-term debt",
-        "2023": 2288.0,
-        "2022": 4367.0
-      },
-      {
-        "item": "Accounts payable",
-        "2023": 8578.0,
-        "2022": 9595.0
-      },
-      {
-        "item": "Accrued compensation and benefits",
-        "2023": 3655.0,
-        "2022": 4084.0
-      },
-      {
-        "item": "Income taxes payable",
-        "2023": 1107.0,
-        "2022": 2251.0
-      },
-      {
-        "item": "Other accrued liabilities",
-        "2023": 12425.0,
-        "2022": 11858.0
-      },
-      {
-        "item": "Total current liabilities",
-        "2023": 28053.0,
-        "2022": 32155.0
-      },
-      {
-        "item": "Debt",
-        "2023": 46978.0,
-        "2022": 37684.0
-      },
-      {
-        "item": "Other long-term liabilities",
-        "2023": 6576.0,
-        "2022": 8978.0
-      },
-      {
-        "item": "Commitments and Contingencies (Note 19)",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "(In Millions)",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Derivatives designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Derivatives not designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Equity contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives not designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "(In Millions)",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Derivatives designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Derivatives not designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Equity contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives not designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives",
-        "2023": null,
-        "2022": null
-      }
-    ],
-    "assets": [
-      {
-        "item": "Current assets:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Cash and cash equivalents",
-        "2023": 7079.0,
-        "2022": 11144.0
-      },
-      {
-        "item": "Short-term investments",
-        "2023": 17955.0,
-        "2022": 17194.0
-      },
-      {
-        "item": "Accounts receivable, net",
-        "2023": 3402.0,
-        "2022": 4133.0
-      },
-      {
-        "item": "Inventories",
-        "2023": 11127.0,
-        "2022": 13224.0
-      },
-      {
-        "item": "Other current assets",
-        "2023": 3706.0,
-        "2022": 4712.0
-      },
-      {
-        "item": "Total current assets",
-        "2023": 43269.0,
-        "2022": 50407.0
-      },
-      {
-        "item": "Property, plant, and equipment, net",
-        "2023": 96647.0,
-        "2022": 80860.0
-      },
-      {
-        "item": "Equity investments",
-        "2023": 5829.0,
-        "2022": 5912.0
-      },
-      {
-        "item": "Goodwill",
-        "2023": 27591.0,
-        "2022": 27591.0
-      },
-      {
-        "item": "Identified intangible assets, net",
-        "2023": 4589.0,
-        "2022": 6018.0
-      },
-      {
-        "item": "Other long-term assets",
-        "2023": 13647.0,
-        "2022": 11315.0
-      },
-      {
-        "item": "Total assets",
-        "2023": 191572.0,
-        "2022": 182103.0
-      }
-    ],
-    "liabilities": [
-      {
-        "item": "Liabilities and stockholders' equity",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Current liabilities:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Short-term debt",
-        "2023": 2288.0,
-        "2022": 4367.0
-      },
-      {
-        "item": "Accounts payable",
-        "2023": 8578.0,
-        "2022": 9595.0
-      },
-      {
-        "item": "Accrued compensation and benefits",
-        "2023": 3655.0,
-        "2022": 4084.0
-      },
-      {
-        "item": "Income taxes payable",
-        "2023": 1107.0,
-        "2022": 2251.0
-      },
-      {
-        "item": "Other accrued liabilities",
-        "2023": 12425.0,
-        "2022": 11858.0
-      },
-      {
-        "item": "Total current liabilities",
-        "2023": 28053.0,
-        "2022": 32155.0
-      },
-      {
-        "item": "Debt",
-        "2023": 46978.0,
-        "2022": 37684.0
-      },
-      {
-        "item": "Other long-term liabilities",
-        "2023": 6576.0,
-        "2022": 8978.0
-      },
-      {
-        "item": "Commitments and Contingencies (Note 19)",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "(In Millions)",
-        "2023": null,
-        "2022": null
-      }
-    ],
-    "derivatives": [
-      {
-        "item": "Derivatives designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Derivatives not designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Equity contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives not designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "(In Millions)",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Derivatives designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Derivatives not designated as hedging instruments:",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Foreign currency contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Interest rate contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Equity contracts",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives not designated as hedging instruments",
-        "2023": null,
-        "2022": null
-      },
-      {
-        "item": "Total derivatives",
-        "2023": null,
-        "2022": null
-      }
-    ]
-  },
+  "ConsolidatedBalanceSheets": [
+    {
+      "item": "Current assets:",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Cash and cash equivalents",
+      "2023": 7079.0,
+      "2022": 11144.0
+    },
+    {
+      "item": "Short-term investments",
+      "2023": 17955.0,
+      "2022": 17194.0
+    },
+    {
+      "item": "Accounts receivable, net",
+      "2023": 3402.0,
+      "2022": 4133.0
+    },
+    {
+      "item": "Inventories",
+      "2023": 11127.0,
+      "2022": 13224.0
+    },
+    {
+      "item": "Other current assets",
+      "2023": 3706.0,
+      "2022": 4712.0
+    },
+    {
+      "item": "Total current assets",
+      "2023": 43269.0,
+      "2022": 50407.0
+    },
+    {
+      "item": "Property, plant, and equipment, net",
+      "2023": 96647.0,
+      "2022": 80860.0
+    },
+    {
+      "item": "Equity investments",
+      "2023": 5829.0,
+      "2022": 5912.0
+    },
+    {
+      "item": "Goodwill",
+      "2023": 27591.0,
+      "2022": 27591.0
+    },
+    {
+      "item": "Identified intangible assets, net",
+      "2023": 4589.0,
+      "2022": 6018.0
+    },
+    {
+      "item": "Other long-term assets",
+      "2023": 13647.0,
+      "2022": 11315.0
+    },
+    {
+      "item": "Total assets",
+      "2023": 191572.0,
+      "2022": 182103.0
+    },
+    {
+      "item": "Liabilities and stockholders' equity",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Current liabilities:",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Short-term debt",
+      "2023": 2288.0,
+      "2022": 4367.0
+    },
+    {
+      "item": "Accounts payable",
+      "2023": 8578.0,
+      "2022": 9595.0
+    },
+    {
+      "item": "Accrued compensation and benefits",
+      "2023": 3655.0,
+      "2022": 4084.0
+    },
+    {
+      "item": "Income taxes payable",
+      "2023": 1107.0,
+      "2022": 2251.0
+    },
+    {
+      "item": "Other accrued liabilities",
+      "2023": 12425.0,
+      "2022": 11858.0
+    },
+    {
+      "item": "Total current liabilities",
+      "2023": 28053.0,
+      "2022": 32155.0
+    },
+    {
+      "item": "Debt",
+      "2023": 46978.0,
+      "2022": 37684.0
+    },
+    {
+      "item": "Other long-term liabilities",
+      "2023": 6576.0,
+      "2022": 8978.0
+    },
+    {
+      "item": "Commitments and Contingencies (Note 19)",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "(In Millions)",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Derivatives designated as hedging instruments:",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Foreign currency contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Interest rate contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Total derivatives designated as hedging instruments",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Derivatives not designated as hedging instruments:",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Foreign currency contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Interest rate contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Equity contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Total derivatives not designated as hedging instruments",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Total derivatives",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "(In Millions)",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Derivatives designated as hedging instruments:",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Foreign currency contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Interest rate contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Total derivatives designated as hedging instruments",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Derivatives not designated as hedging instruments:",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Foreign currency contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Interest rate contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Equity contracts",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Total derivatives not designated as hedging instruments",
+      "2023": null,
+      "2022": null
+    },
+    {
+      "item": "Total derivatives",
+      "2023": null,
+      "2022": null
+    }
+  ],
   "ConsolidatedStatementsOfEquity": [
     {
       "Shares": 4062.0,

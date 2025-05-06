@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import ReactECharts from 'echarts-for-react'
 import type { EChartsOption, GaugeSeriesOption } from 'echarts'
 import { useTheme } from '@/context/ThemeProvider'
-import { cn } from '@/lib/utils'
 
 interface BalanceSheetHealthProps {
   data: {
@@ -12,25 +11,10 @@ interface BalanceSheetHealthProps {
   }[]
 }
 
-interface RatioConfig {
-  name: string
-  value: number
-  description: string
-  min: number
-  max: number
-  thresholds: { good: number; warning: number }
-  isInverse?: boolean
-}
-
-type RatioConfigs = {
-  [key: string]: RatioConfig
-}
-
 export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
 
-  // Get latest year from the data
   const getLatestYear = () => {
     if (data.length === 0) return ''
     const firstItem = data[0]
@@ -42,196 +26,62 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
 
   const latestYear = getLatestYear()
 
-  // Calculate key ratios
-  const calculateRatios = () => {
-    const findValue = (itemName: string) => {
-      const item = data.find((d) => d.item === itemName)
-      return item ? (item[latestYear] as number) : 0
-    }
-
-    const currentAssets = findValue('Total current assets')
-    const currentLiabilities = findValue('Total current liabilities')
-    const totalAssets = findValue('Total assets')
-    const totalLiabilities = findValue('Total liabilities')
-    const shareholdersEquity = findValue("Total shareholders' equity")
-
-    return {
-      currentRatio: currentAssets / currentLiabilities,
-      debtToEquity: totalLiabilities / shareholdersEquity,
-      assetCoverage: totalAssets / totalLiabilities,
-    }
+  const findValue = (itemName: string): number => {
+    const item = data.find((d) => d.item === itemName)
+    return item ? (item[latestYear] as number) || 0 : 0
   }
 
-  const ratios = calculateRatios()
+  const currentAssets = findValue('Total current assets')
+  const currentLiabilities = findValue('Total current liabilities')
+  const totalAssets = findValue('Total assets')
+  const totalLiabilities = findValue('Total liabilities')
+  const shareholdersEquity = findValue("Total shareholders' equity")
 
-  const createGaugeOption = (
-    value: number,
-    name: string,
-    min: number,
-    max: number,
-    thresholds: { good: number; warning: number },
-    isInverse = false,
-    statusColor: string,
-    key?: string,
-  ): EChartsOption => {
-    // Clamp value to min/max for display
-    let displayValue = value
-    if (!Number.isFinite(displayValue)) displayValue = min
-    if (displayValue < min) displayValue = min
-    if (displayValue > max) displayValue = max
-    // Always show pointer for Debt to Equity gauge, even if value is not finite
-    const showPointer = key === 'debtToEquity' ? true : Number.isFinite(value)
-    // Calculate splitNumber for nice ticks (prefer 4 or 5 for small ranges)
-    const range = max - min
-    let splitNumber = 4
-    if (range > 4) splitNumber = 5
-    // Generate custom axis labels for clean, round numbers
-    const tickValues: number[] = []
-    for (let i = 0; i <= splitNumber; i++) {
-      const v = min + i * (range / splitNumber)
-      tickValues.push(Number(v.toFixed(2)))
-    }
-    return {
-      series: [
-        {
-          type: 'gauge',
-          startAngle: 200,
-          endAngle: -20,
-          min,
-          max,
-          splitNumber,
-          radius: '80%',
-          itemStyle: {
-            color: statusColor,
-            shadowColor: 'rgba(0,0,0,0.08)',
-            shadowBlur: 4,
-            shadowOffsetX: 1,
-            shadowOffsetY: 1,
-          },
-          progress: {
-            show: true,
-            roundCap: true,
-            width: 10,
-          },
-          pointer: {
-            show: showPointer,
-            length: '60%',
-            width: 4,
-            itemStyle: {
-              color: statusColor,
-            },
-          },
-          axisLine: {
-            roundCap: true,
-            lineStyle: {
-              width: 10,
-              color: [
-                [
-                  Number(thresholds.warning) / Number(max),
-                  isDark ? '#ef4444' : '#dc2626',
-                ],
-                [
-                  Number(thresholds.good) / Number(max),
-                  isDark ? '#f97316' : '#ea580c',
-                ],
-                [1, isDark ? '#22c55e' : '#16a34a'],
-              ].sort((a, b) =>
-                isInverse
-                  ? Number(b[0]) - Number(a[0])
-                  : Number(a[0]) - Number(b[0]),
-              ) as [number, string][],
-            },
-          },
-          anchor: {
-            show: showPointer,
-            showAbove: true,
-            size: 12,
-            itemStyle: {
-              color: statusColor,
-            },
-          },
-          axisTick: {
-            distance: -15,
-            length: 4,
-            splitNumber: 5,
-            lineStyle: {
-              width: 1,
-              color: isDark ? '#475569' : '#94a3b8',
-            },
-          },
-          splitLine: {
-            distance: -18,
-            length: 8,
-            lineStyle: {
-              width: 2,
-              color: isDark ? '#475569' : '#94a3b8',
-            },
-          },
-          axisLabel: {
-            distance: -8,
-            color: isDark ? '#94a3b8' : '#475569',
-            fontSize: 12,
-            formatter: (v: number) => {
-              // Only show labels for our custom tick values
-              if (tickValues.includes(Number(v.toFixed(2)))) {
-                // Show at most 1 decimal place, but no trailing .0
-                return v % 1 === 0 ? v.toFixed(0) : v.toFixed(1)
-              }
-              return ''
-            },
-          },
-          title: {
-            show: false,
-          },
-          detail: {
-            show: false,
-          },
-          data: [
-            {
-              value: displayValue,
-              name,
-            },
-          ],
-        },
-      ],
-      grid: { left: 20, right: 20, top: 30, bottom: 30 },
-    }
+  const ratios = {
+    currentRatio: currentLiabilities ? currentAssets / currentLiabilities : 0,
+    debtToEquity: shareholdersEquity
+      ? totalLiabilities / shareholdersEquity
+      : 0,
+    assetCoverage: totalLiabilities ? totalAssets / totalLiabilities : 0,
   }
 
-  const ratioConfigs: RatioConfigs = {
-    currentRatio: {
+  const ratioConfigs = [
+    {
+      key: 'currentRatio',
       name: 'Current Ratio',
       value: ratios.currentRatio,
-      description:
-        'Measures ability to pay short-term obligations. Higher is better.',
+      description: 'Ability to cover short-term obligations.',
       min: 0,
       max: 3,
       thresholds: { good: 2, warning: 1.5 },
+      isInverse: false,
     },
-    debtToEquity: {
+    {
+      key: 'debtToEquity',
       name: 'Debt to Equity',
       value: ratios.debtToEquity,
-      description: 'Indicates financial leverage and risk. Lower is better.',
+      description: 'Financial leverage risk.',
       min: 0,
       max: 3,
       thresholds: { good: 1, warning: 2 },
       isInverse: true,
     },
-    assetCoverage: {
+    {
+      key: 'assetCoverage',
       name: 'Asset Coverage',
       value: ratios.assetCoverage,
-      description: 'Shows asset protection for creditors. Higher is better.',
+      description: 'Assets to liabilities ratio.',
       min: 0,
       max: 2,
       thresholds: { good: 1.5, warning: 1.2 },
+      isInverse: false,
     },
-  }
+  ]
 
-  // Helper for status and color
-  const getStatusAndColor = (
+  const getStatusColor = (
     value: number,
-    thresholds: { good: number; warning: number },
-    isInverse = false,
+    thresholds: any,
+    isInverse: boolean,
   ) => {
     if (isInverse) {
       if (value <= thresholds.good)
@@ -248,28 +98,94 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
     }
   }
 
+  const getGaugeSeries = (
+    value: number,
+    config: any,
+    color: string,
+  ): GaugeSeriesOption => {
+    const thresholds: [number, string][] = [
+      [config.thresholds.warning / config.max, isDark ? '#ef4444' : '#dc2626'],
+      [config.thresholds.good / config.max, isDark ? '#f97316' : '#ea580c'],
+      [1, isDark ? '#22c55e' : '#16a34a'],
+    ]
+
+    const sortedThresholds = thresholds.sort((a, b) => {
+      const aVal = typeof a[0] === 'number' ? a[0] : 0
+      const bVal = typeof b[0] === 'number' ? b[0] : 0
+      return config.isInverse ? bVal - aVal : aVal - bVal
+    }) as [number, string][]
+
+    return {
+      type: 'gauge',
+      startAngle: 200,
+      endAngle: -20,
+      min: config.min,
+      max: config.max,
+      radius: '80%',
+      splitNumber: 4,
+      itemStyle: {
+        color,
+      },
+      progress: {
+        show: true,
+        roundCap: true,
+        width: 10,
+      },
+      pointer: {
+        show: true,
+        length: '60%',
+        width: 4,
+        itemStyle: {
+          color,
+        },
+      },
+      axisLine: {
+        lineStyle: {
+          width: 10,
+          color: sortedThresholds,
+        },
+      },
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        show: false,
+      },
+      axisLabel: {
+        show: false,
+      },
+      data: [{ value }],
+      title: { show: false },
+      detail: { show: false },
+    }
+  }
+
   return (
-    <Card className="border-primary/10 bg-gradient-to-br from-background via-background to-muted/10">
+    <Card className="border-none rounded-2xl bg-gradient-to-br from-background via-background to-muted/10">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-xl font-semibold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
           Balance Sheet Health ({latestYear})
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-sm text-center mb-6 text-muted-foreground">
-          Key financial ratios and health indicators
+        <div className="text-lg font-semibold text-center mb-6 text-muted-foreground">
+          Key financial ratios and indicators of balance sheet strength
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {Object.entries(ratioConfigs).map(([key, config]) => {
-            const { status, color } = getStatusAndColor(
+          {ratioConfigs.map((config) => {
+            const { status, color } = getStatusColor(
               config.value,
               config.thresholds,
               config.isInverse,
             )
+            const gaugeOption: EChartsOption = {
+              series: [getGaugeSeries(config.value, config, color)],
+            }
+
             return (
               <div
-                key={key}
-                className="flex flex-col items-center bg-card rounded-xl shadow-sm px-4 py-8"
+                key={config.key}
+                className="flex flex-col items-center bg-card rounded-xl px-4 py-8"
                 style={{ overflow: 'visible', minHeight: 320 }}
               >
                 <div className="text-3xl font-bold mb-2" style={{ color }}>
@@ -277,27 +193,10 @@ export function BalanceSheetHealth({ data }: BalanceSheetHealthProps) {
                     ? config.value.toFixed(2)
                     : 'N/A'}
                 </div>
-                <div
-                  className="w-full flex flex-col items-center"
-                  style={{ overflow: 'visible' }}
-                >
+                <div className="w-full flex flex-col items-center">
                   <ReactECharts
-                    option={createGaugeOption(
-                      config.value,
-                      config.name,
-                      config.min,
-                      config.max,
-                      config.thresholds,
-                      config.isInverse,
-                      color,
-                      key,
-                    )}
-                    style={{
-                      height: '240px',
-                      width: '100%',
-                      minWidth: '180px',
-                      overflow: 'visible',
-                    }}
+                    option={gaugeOption}
+                    style={{ height: '240px', width: '100%' }}
                     theme={isDark ? 'dark' : undefined}
                   />
                 </div>

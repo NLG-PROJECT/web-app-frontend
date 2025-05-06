@@ -6,7 +6,6 @@ import { Upload, FileText, AlertCircle, X, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { motion, AnimatePresence } from 'framer-motion'
-import axios from 'axios'
 
 interface ReportUploadProps {
   onUpload: (fileName: string) => void
@@ -42,98 +41,17 @@ export function ReportUpload({ onUpload }: ReportUploadProps) {
     maxFiles: 1,
   })
 
+  // ✅ Simplified upload for testing (bypasses backend)
   const handleUpload = async () => {
     if (!file) return
 
-    try {
-      console.log('Starting file upload...')
-      console.log('File details:', {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-      })
+    setIsUploading(true)
+    setUploadProgress(100) // instantly show full progress
 
-      setIsUploading(true)
-      setError(null)
-      setUploadProgress(0)
-
-      const formData = new FormData()
-      formData.append('files', file)
-
-      console.log('FormData created, preparing request...')
-
-      const response = await axios.post('/api/upload/files', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Accept: 'application/json',
-        },
-        onUploadProgress: (progressEvent) => {
-          const progress = progressEvent.total
-            ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            : 0
-          console.log(`Upload progress: ${progress}%`)
-          setUploadProgress(progress)
-        },
-      })
-
-      console.log('Server response received:', {
-        status: response.status,
-        statusText: response.statusText,
-        headers: response.headers,
-        data: response.data,
-      })
-
-      if (response.status === 200) {
-        console.log('Upload successful, calling onUpload callback')
-        onUpload(file.name)
-      } else {
-        console.error('Unexpected response status:', response.status)
-        throw new Error(`Upload failed with status ${response.status}`)
-      }
-    } catch (err) {
-      console.error('Upload error details:', {
-        error: err,
-        isAxiosError: axios.isAxiosError(err),
-        response: axios.isAxiosError(err) ? err.response : null,
-        request: axios.isAxiosError(err) ? err.request : null,
-        message: err instanceof Error ? err.message : 'Unknown error',
-      })
-
-      if (axios.isAxiosError(err)) {
-        if (err.response) {
-          console.error('Server response error:', {
-            status: err.response.status,
-            statusText: err.response.statusText,
-            data: err.response.data,
-            headers: err.response.headers,
-          })
-          setError(
-            `Upload failed: ${err.response.data?.message || 'Server error'}`,
-          )
-        } else if (err.request) {
-          console.error('No response received from server:', {
-            request: err.request,
-            config: err.config,
-          })
-          setError(
-            'Upload failed: No response from server. Please check if the server is running.',
-          )
-        } else {
-          console.error('Request setup error:', {
-            message: err.message,
-            config: err.config,
-          })
-          setError(`Upload failed: ${err.message}`)
-        }
-      } else {
-        console.error('Non-Axios error:', err)
-        setError('Failed to upload file. Please try again.')
-      }
-    } finally {
-      console.log('Upload process completed')
+    setTimeout(() => {
+      onUpload(file.name) // simulate upload success
       setIsUploading(false)
-      setUploadProgress(0)
-    }
+    }, 500) // short delay for UX
   }
 
   const removeFile = () => {
