@@ -139,7 +139,9 @@ export function FactCheckOverlay({
                   <div className="flex items-center gap-3">
                     {getScoreIcon(claim.score)}
                     <div>
-                      <p className="font-medium">{claim.claim}</p>
+                      <p className="font-medium">
+                        {claim.claim.replace(/^###\s*/g, '')}
+                      </p>
                       <p className={cn('text-sm', getScoreColor(claim.score))}>
                         {getScoreLabel(claim.score)} (
                         {Math.round(claim.score * 100)}%)
@@ -160,7 +162,7 @@ export function FactCheckOverlay({
                     <div className="rounded-md bg-muted p-3">
                       <h4 className="text-sm font-medium mb-2">Evidence</h4>
                       <p className="text-sm text-muted-foreground">
-                        {claim.evidence}
+                        {claim.evidence.replace(/^###\s*/g, '')}
                       </p>
                     </div>
 

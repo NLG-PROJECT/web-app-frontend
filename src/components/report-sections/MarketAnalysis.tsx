@@ -141,12 +141,12 @@ export function MarketAnalysis() {
       return (
         <div key={index} className="mb-8 last:mb-0">
           <h3 className="text-lg font-semibold mb-3 text-primary">
-            {title.trim()}
+            {title.trim().replace(/^###\s*/, '')}
           </h3>
           <div className="prose prose-sm dark:prose-invert max-w-none">
             {contentText.split('\n\n').map((paragraph, pIndex) => (
               <p key={pIndex} className="mb-4 last:mb-0 text-muted-foreground">
-                {paragraph}
+                {paragraph.replace(/^###\s*/g, '')}
               </p>
             ))}
           </div>
