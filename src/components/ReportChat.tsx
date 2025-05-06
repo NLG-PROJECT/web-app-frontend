@@ -23,6 +23,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog'
+import { PDFViewer } from './PDFViewer'
+import { FactCheckOverlay } from './FactCheckOverlay'
 
 interface FactCheckResult {
   claim: string
@@ -60,7 +62,14 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
     selectedFactCheck,
     setSelectedFactCheck,
   ] = useState<FactCheckResult | null>(null)
+  const [isPDFViewerOpen, setIsPDFViewerOpen] = useState(false)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const [showFactCheck, setShowFactCheck] = useState(false)
+  const [
+    factCheckResult,
+    setFactCheckResult,
+  ] = useState<FactCheckResult | null>(null)
+  const [isFactChecking, setIsFactChecking] = useState(false)
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
@@ -118,49 +127,6 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
       setMessages((prev) => [...prev, errorMessage])
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  const handleFactCheck = async (messageId: string) => {
-    setMessages((prev) =>
-      prev.map((msg) =>
-        msg.id === messageId ? { ...msg, isFactChecking: true } : msg,
-      ),
-    )
-
-    try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://127.0.0.1:8000/fact-check',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data: {
-          statement: messages.find((m) => m.id === messageId)?.content,
-        },
-      })
-
-      console.log('Fact check response:', response.data)
-
-      // Update the message with fact check results
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === messageId
-            ? {
-                ...msg,
-                isFactChecking: false,
-                factCheckResult: response.data.fact_check[0],
-              }
-            : msg,
-        ),
-      )
-    } catch (err) {
-      console.error('Fact check error:', err)
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === messageId ? { ...msg, isFactChecking: false } : msg,
-        ),
-      )
     }
   }
 
@@ -224,11 +190,104 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
                 )}
                 {message.sender === 'ai' && (
                   <button
-                    onClick={() => {
+                    onClick={async () => {
+                      console.log('Fact check button clicked:', {
+                        hasResult: !!message.factCheckResult,
+                        messageId: message.id,
+                        content: message.content,
+                      })
+
                       if (message.factCheckResult) {
-                        setSelectedFactCheck(message.factCheckResult)
+                        console.log('Showing existing fact check result')
+                        setFactCheckResult(message.factCheckResult)
+                        setShowFactCheck(true)
                       } else {
-                        handleFactCheck(message.id)
+                        console.log('Starting new fact check')
+                        // Set loading state for this specific message
+                        setMessages((prev) =>
+                          prev.map((msg) =>
+                            msg.id === message.id
+                              ? { ...msg, isFactChecking: true }
+                              : msg,
+                          ),
+                        )
+
+                        try {
+                          console.log(
+                            'Making API call to fact-check endpoint...',
+                          )
+                          const response = await axios.post(
+                            'http://127.0.0.1:8000/fact-check',
+                            {
+                              statement: message.content,
+                            },
+                          )
+
+                          console.log('Raw API response:', response)
+                          console.log(
+                            'Fact check API response data:',
+                            response.data,
+                          )
+
+                          // Check if we have the expected data structure
+                          if (
+                            !response.data ||
+                            typeof response.data !== 'object'
+                          ) {
+                            throw new Error('Invalid response format from API')
+                          }
+
+                          // Extract the fact check result from the response
+                          const factCheckResult = response.data.fact_check?.[0]
+                          if (!factCheckResult) {
+                            throw new Error('No fact check result in response')
+                          }
+
+                          const factCheckData: FactCheckResult = {
+                            claim: factCheckResult.claim || message.content,
+                            score: factCheckResult.score || 0,
+                            status: factCheckResult.status || 'unknown',
+                            evidence: factCheckResult.evidence || '',
+                            page: factCheckResult.page || 1,
+                          }
+
+                          console.log(
+                            'Processed fact check data:',
+                            factCheckData,
+                          )
+
+                          // Update message with fact check result
+                          setMessages((prev) =>
+                            prev.map((msg) =>
+                              msg.id === message.id
+                                ? {
+                                    ...msg,
+                                    isFactChecking: false,
+                                    factCheckResult: factCheckData,
+                                  }
+                                : msg,
+                            ),
+                          )
+
+                          console.log('Message updated with fact check result')
+                        } catch (err) {
+                          console.error('Fact check error:', err)
+                          if (axios.isAxiosError(err)) {
+                            console.error('API Error details:', {
+                              status: err.response?.status,
+                              data: err.response?.data,
+                              message: err.message,
+                            })
+                          }
+                          // Reset loading state on error
+                          setMessages((prev) =>
+                            prev.map((msg) =>
+                              msg.id === message.id
+                                ? { ...msg, isFactChecking: false }
+                                : msg,
+                            ),
+                          )
+                        }
                       }
                     }}
                     disabled={message.isFactChecking}
@@ -295,59 +354,14 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
         </div>
       </form>
 
-      <Dialog
-        open={!!selectedFactCheck}
-        onOpenChange={() => setSelectedFactCheck(null)}
-      >
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <span>Fact Check Results</span>
-              {selectedFactCheck && getFactCheckIcon(selectedFactCheck.score)}
-            </DialogTitle>
-            <DialogDescription>
-              Score:{' '}
-              {selectedFactCheck
-                ? (selectedFactCheck.score * 100).toFixed(1)
-                : '0'}
-              % • Status: {selectedFactCheck?.status}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4 py-4">
-            <div>
-              <h4 className="font-medium mb-2">Claim</h4>
-              <p className="text-sm text-muted-foreground">
-                {selectedFactCheck?.claim}
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-medium mb-2">Evidence</h4>
-              <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md">
-                {selectedFactCheck &&
-                  formatEvidence(selectedFactCheck.evidence)}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-2">
-              <span className="text-sm text-muted-foreground">
-                Page {selectedFactCheck?.page}
-              </span>
-              <Button
-                onClick={() => {
-                  // TODO: Handle PDF navigation
-                  setSelectedFactCheck(null)
-                }}
-                className="flex items-center gap-2"
-              >
-                <FileText className="size-4" />
-                Confirm in Document
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {showFactCheck && factCheckResult && (
+        <FactCheckOverlay
+          isOpen={showFactCheck}
+          onClose={() => setShowFactCheck(false)}
+          factCheck={factCheckResult}
+          pdfUrl="/data/samplepdf.pdf"
+        />
+      )}
     </div>
   )
 }
