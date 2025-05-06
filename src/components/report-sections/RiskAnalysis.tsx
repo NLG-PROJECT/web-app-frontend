@@ -1,30 +1,61 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertTriangle, Loader2 } from 'lucide-react'
+import {
+  AlertTriangle,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  XCircle,
+} from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Button } from '@/components/ui/button'
+import { FactCheckOverlay } from '@/components/FactCheckOverlay'
 
-interface RiskAnalysis {
+interface RiskSummary {
   message: string
   summary: string
 }
 
-// Cache key for session storage
-const RISK_ANALYSIS_CACHE_KEY = 'risk_analysis_cache'
+interface FactCheckResult {
+  claim: string
+  score: number
+  status: string
+  evidence: string
+  page: number
+}
+
+interface FactCheckResponse {
+  fact_check: FactCheckResult[]
+}
+
+// Cache keys for session storage
+const RISK_SUMMARY_CACHE_KEY = 'risk_summary_cache'
+const RISK_FACT_CHECK_CACHE_KEY = 'risk_fact_check_cache'
 
 export function RiskAnalysis() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [riskAnalysis, setRiskAnalysis] = useState<RiskAnalysis | null>(null)
+  const [riskSummary, setRiskSummary] = useState<RiskSummary | null>(null)
+  const [isFactChecking, setIsFactChecking] = useState(false)
+  const [
+    factCheckResult,
+    setFactCheckResult,
+  ] = useState<FactCheckResponse | null>(null)
+  const [showFactCheck, setShowFactCheck] = useState(false)
+  const [
+    selectedFactCheck,
+    setSelectedFactCheck,
+  ] = useState<FactCheckResult | null>(null)
 
   useEffect(() => {
-    const fetchRiskAnalysis = async () => {
+    const fetchRiskSummary = async () => {
       try {
         // Check session storage first
-        const cachedData = sessionStorage.getItem(RISK_ANALYSIS_CACHE_KEY)
+        const cachedData = sessionStorage.getItem(RISK_SUMMARY_CACHE_KEY)
         if (cachedData) {
           const parsedData = JSON.parse(cachedData)
-          setRiskAnalysis(parsedData)
+          setRiskSummary(parsedData)
           setIsLoading(false)
           return
         }
@@ -37,20 +68,69 @@ export function RiskAnalysis() {
         const data = response.data
 
         // Store in session storage
-        sessionStorage.setItem(RISK_ANALYSIS_CACHE_KEY, JSON.stringify(data))
-        setRiskAnalysis(data)
+        sessionStorage.setItem(RISK_SUMMARY_CACHE_KEY, JSON.stringify(data))
+        setRiskSummary(data)
       } catch (err) {
-        console.error('Error fetching risk analysis:', err)
+        console.error('Error fetching risk summary:', err)
         setError('Failed to load risk analysis. Please try again later.')
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchRiskAnalysis()
+    fetchRiskSummary()
   }, [])
 
-  const renderRiskAnalysis = (summary: string) => {
+  const handleFactCheck = async () => {
+    try {
+      // Check session storage first
+      const cachedData = sessionStorage.getItem(RISK_FACT_CHECK_CACHE_KEY)
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData)
+        setFactCheckResult(parsedData)
+        setShowFactCheck(true)
+        return
+      }
+
+      setIsFactChecking(true)
+      const response = await axios.post('http://127.0.0.1:8000/fact-check', {
+        statement: riskSummary?.summary,
+      })
+
+      // Store in session storage
+      sessionStorage.setItem(
+        RISK_FACT_CHECK_CACHE_KEY,
+        JSON.stringify(response.data),
+      )
+      setFactCheckResult(response.data)
+      setShowFactCheck(true)
+    } catch (err) {
+      console.error('Error fact-checking risk analysis:', err)
+      setError('Failed to fact-check risk analysis. Please try again later.')
+    } finally {
+      setIsFactChecking(false)
+    }
+  }
+
+  const getFactCheckIcon = (score: number) => {
+    if (score >= 0.75) {
+      return <CheckCircle2 className="size-3 text-green-500" />
+    } else if (score >= 0.5) {
+      return <CheckCircle2 className="size-3 text-orange-500" />
+    } else if (score >= 0.25) {
+      return <AlertCircle className="size-3 text-yellow-500" />
+    } else {
+      return <XCircle className="size-3 text-red-500" />
+    }
+  }
+
+  const getAverageScore = (factChecks: FactCheckResult[]) => {
+    if (!factChecks.length) return 0
+    const sum = factChecks.reduce((acc, curr) => acc + curr.score, 0)
+    return sum / factChecks.length
+  }
+
+  const renderRiskSummary = (summary: string) => {
     // Split the summary into sections based on ### headers
     const sections = summary.split('###').filter(Boolean)
 
@@ -61,12 +141,12 @@ export function RiskAnalysis() {
       return (
         <div key={index} className="mb-8 last:mb-0">
           <h3 className="text-lg font-semibold mb-3 text-primary">
-            {title.trim()}
+            {title.trim().replace(/^###\s*/, '')}
           </h3>
           <div className="prose prose-sm dark:prose-invert max-w-none">
             {contentText.split('\n\n').map((paragraph, pIndex) => (
               <p key={pIndex} className="mb-4 last:mb-0 text-muted-foreground">
-                {paragraph}
+                {paragraph.replace(/^###\s*/g, '')}
               </p>
             ))}
           </div>
@@ -88,11 +168,35 @@ export function RiskAnalysis() {
             <AlertTriangle className="size-5 text-primary" />
             Risk Analysis
           </CardTitle>
+          {riskSummary && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleFactCheck}
+              disabled={isFactChecking}
+              className="gap-2"
+            >
+              {isFactChecking ? (
+                <>
+                  <Loader2 className="size-3 animate-spin" />
+                  Fact-checking...
+                </>
+              ) : factCheckResult ? (
+                <>
+                  {getFactCheckIcon(
+                    getAverageScore(factCheckResult.fact_check),
+                  )}
+                  View details
+                </>
+              ) : (
+                'Fact-check analysis'
+              )}
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            Assessment of key risks, mitigation strategies, and risk management
-            framework.
+            Risk factors, mitigation strategies, and potential impact analysis.
             <span className="block mt-2 text-sm text-amber-500/80">
               ⚠️ This is an experimental AI-generated analysis. Please
               fact-check critical information before making decisions.
@@ -117,13 +221,20 @@ export function RiskAnalysis() {
           )}
 
           {/* Content */}
-          {!isLoading && !error && riskAnalysis && (
-            <div className="mt-8">
-              {renderRiskAnalysis(riskAnalysis.summary)}
-            </div>
+          {!isLoading && !error && riskSummary && (
+            <div className="mt-8">{renderRiskSummary(riskSummary.summary)}</div>
           )}
         </CardContent>
       </Card>
+
+      {showFactCheck && factCheckResult && (
+        <FactCheckOverlay
+          isOpen={showFactCheck}
+          onClose={() => setShowFactCheck(false)}
+          factCheck={factCheckResult.fact_check}
+          pdfUrl="/data/samplepdf.pdf"
+        />
+      )}
     </motion.div>
   )
 }
