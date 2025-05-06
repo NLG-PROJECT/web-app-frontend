@@ -13,8 +13,24 @@ import {
   CheckCircle2,
   AlertCircle,
   XCircle,
+  FileText,
 } from 'lucide-react'
 import axios from 'axios'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+
+interface FactCheckResult {
+  claim: string
+  score: number
+  status: string
+  evidence: string
+  page: number
+}
 
 interface Message {
   id: string
@@ -22,12 +38,7 @@ interface Message {
   sender: 'user' | 'ai'
   timestamp: Date
   isFactChecking?: boolean
-  factCheckResult?: {
-    score: number
-    status: string
-    evidence: string
-    page: number
-  }
+  factCheckResult?: FactCheckResult
   references?: {
     section?: string
     metric?: string
@@ -45,6 +56,10 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [
+    selectedFactCheck,
+    setSelectedFactCheck,
+  ] = useState<FactCheckResult | null>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   // Scroll to bottom when new messages arrive
@@ -161,6 +176,14 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
     }
   }
 
+  const formatEvidence = (evidence: string) => {
+    return evidence.split('\\n').map((line, index) => (
+      <p key={index} className="mb-2">
+        {line}
+      </p>
+    ))
+  }
+
   return (
     <div className="flex flex-col h-full">
       {/* Chat Header */}
@@ -201,7 +224,13 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
                 )}
                 {message.sender === 'ai' && (
                   <button
-                    onClick={() => handleFactCheck(message.id)}
+                    onClick={() => {
+                      if (message.factCheckResult) {
+                        setSelectedFactCheck(message.factCheckResult)
+                      } else {
+                        handleFactCheck(message.id)
+                      }
+                    }}
                     disabled={message.isFactChecking}
                     className="mt-2 text-xs text-muted-foreground hover:text-primary hover:underline transition-colors flex items-center gap-1"
                   >
@@ -265,6 +294,60 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
           </Button>
         </div>
       </form>
+
+      <Dialog
+        open={!!selectedFactCheck}
+        onOpenChange={() => setSelectedFactCheck(null)}
+      >
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <span>Fact Check Results</span>
+              {selectedFactCheck && getFactCheckIcon(selectedFactCheck.score)}
+            </DialogTitle>
+            <DialogDescription>
+              Score:{' '}
+              {selectedFactCheck
+                ? (selectedFactCheck.score * 100).toFixed(1)
+                : '0'}
+              % • Status: {selectedFactCheck?.status}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <div>
+              <h4 className="font-medium mb-2">Claim</h4>
+              <p className="text-sm text-muted-foreground">
+                {selectedFactCheck?.claim}
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-medium mb-2">Evidence</h4>
+              <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md">
+                {selectedFactCheck &&
+                  formatEvidence(selectedFactCheck.evidence)}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <span className="text-sm text-muted-foreground">
+                Page {selectedFactCheck?.page}
+              </span>
+              <Button
+                onClick={() => {
+                  // TODO: Handle PDF navigation
+                  setSelectedFactCheck(null)
+                }}
+                className="flex items-center gap-2"
+              >
+                <FileText className="size-4" />
+                Confirm in Document
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
