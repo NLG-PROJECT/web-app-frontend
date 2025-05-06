@@ -337,14 +337,16 @@ export function FactCheckOverlay({
                     </div>
                   }
                 >
-                  <Page
-                    pageNumber={currentPage}
-                    scale={scale}
-                    className="shadow-lg"
-                    renderTextLayer={true}
-                    renderAnnotationLayer={true}
-                    customTextRenderer={customTextRenderer}
-                  />
+                  <div className="p-8 bg-muted/20 rounded-lg">
+                    <Page
+                      pageNumber={currentPage}
+                      scale={scale}
+                      className="shadow-lg"
+                      renderTextLayer={true}
+                      renderAnnotationLayer={true}
+                      customTextRenderer={customTextRenderer}
+                    />
+                  </div>
                 </Document>
               </div>
             </div>
