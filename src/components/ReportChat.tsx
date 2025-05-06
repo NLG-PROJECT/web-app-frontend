@@ -154,10 +154,19 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
     <div className="flex flex-col h-full">
       {/* Chat Header */}
       <div className="flex items-center justify-between p-4 border-b">
-        <div>
-          <h3 className="font-semibold">AI Assistant</h3>
-          <p className="text-sm text-muted-foreground">
-            Current section: {currentSection}
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold">AI Assistant</h3>
+            <span
+              title="AI-generated — experimental content"
+              className="text-primary"
+            >
+              ✨
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground italic">
+            Experimental — Assistant can make mistakes. Please fact-check
+            critical responses.
           </p>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -344,7 +353,7 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about this section..."
+            placeholder="Ask me anything about your report..."
             className="flex-1"
             disabled={isLoading}
           />
