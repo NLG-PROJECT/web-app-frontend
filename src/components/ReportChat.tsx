@@ -40,7 +40,7 @@ interface Message {
   sender: 'user' | 'ai'
   timestamp: Date
   isFactChecking?: boolean
-  factCheckResult?: FactCheckResult
+  factCheckResult?: FactCheckResult[]
   references?: {
     section?: string
     metric?: string
@@ -58,18 +58,9 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [
-    selectedFactCheck,
-    setSelectedFactCheck,
-  ] = useState<FactCheckResult | null>(null)
-  const [isPDFViewerOpen, setIsPDFViewerOpen] = useState(false)
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [showFactCheck, setShowFactCheck] = useState(false)
-  const [
-    factCheckResult,
-    setFactCheckResult,
-  ] = useState<FactCheckResult | null>(null)
-  const [isFactChecking, setIsFactChecking] = useState(false)
+  const [factCheckResult, setFactCheckResult] = useState<FactCheckResult[]>([])
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
@@ -97,7 +88,7 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
       console.log('Sending chat message:', input)
       const response = await axios.post('/api/chat', {
         message: input,
-        option: currentSection, // Using current section as the option
+        option: currentSection,
       })
 
       console.log('Chat response received:', response.data)
@@ -142,12 +133,10 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
     }
   }
 
-  const formatEvidence = (evidence: string) => {
-    return evidence.split('\\n').map((line, index) => (
-      <p key={index} className="mb-2">
-        {line}
-      </p>
-    ))
+  const getAverageScore = (factChecks: FactCheckResult[]) => {
+    if (!factChecks.length) return 0
+    const sum = factChecks.reduce((acc, curr) => acc + curr.score, 0)
+    return sum / factChecks.length
   }
 
   return (
@@ -222,6 +211,27 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
                         )
 
                         try {
+                          // Check session storage first
+                          const cacheKey = `chat_fact_check_${message.id}`
+                          const cachedData = sessionStorage.getItem(cacheKey)
+                          if (cachedData) {
+                            const parsedData = JSON.parse(cachedData)
+                            setMessages((prev) =>
+                              prev.map((msg) =>
+                                msg.id === message.id
+                                  ? {
+                                      ...msg,
+                                      isFactChecking: false,
+                                      factCheckResult: parsedData.fact_check,
+                                    }
+                                  : msg,
+                              ),
+                            )
+                            setFactCheckResult(parsedData.fact_check)
+                            setShowFactCheck(true)
+                            return
+                          }
+
                           console.log(
                             'Making API call to fact-check endpoint...',
                           )
@@ -246,23 +256,10 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
                             throw new Error('Invalid response format from API')
                           }
 
-                          // Extract the fact check result from the response
-                          const factCheckResult = response.data.fact_check?.[0]
-                          if (!factCheckResult) {
-                            throw new Error('No fact check result in response')
-                          }
-
-                          const factCheckData: FactCheckResult = {
-                            claim: factCheckResult.claim || message.content,
-                            score: factCheckResult.score || 0,
-                            status: factCheckResult.status || 'unknown',
-                            evidence: factCheckResult.evidence || '',
-                            page: factCheckResult.page || 1,
-                          }
-
-                          console.log(
-                            'Processed fact check data:',
-                            factCheckData,
+                          // Store in session storage
+                          sessionStorage.setItem(
+                            cacheKey,
+                            JSON.stringify(response.data),
                           )
 
                           // Update message with fact check result
@@ -272,7 +269,7 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
                                 ? {
                                     ...msg,
                                     isFactChecking: false,
-                                    factCheckResult: factCheckData,
+                                    factCheckResult: response.data.fact_check,
                                   }
                                 : msg,
                             ),
@@ -308,10 +305,22 @@ export function ReportChat({ currentSection, onClose }: ReportChatProps) {
                         Fact-checking...
                       </>
                     ) : message.factCheckResult ? (
-                      <>
-                        {getFactCheckIcon(message.factCheckResult.score)}
-                        View details
-                      </>
+                      <div className="mt-2 flex items-center gap-1">
+                        {getFactCheckIcon(
+                          getAverageScore(message.factCheckResult),
+                        )}
+                        <button
+                          onClick={() => {
+                            if (message.factCheckResult) {
+                              setFactCheckResult(message.factCheckResult)
+                              setShowFactCheck(true)
+                            }
+                          }}
+                          className="text-xs text-primary hover:underline transition-colors"
+                        >
+                          View details
+                        </button>
+                      </div>
                     ) : (
                       'Fact-check response'
                     )}
