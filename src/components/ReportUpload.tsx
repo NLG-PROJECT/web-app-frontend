@@ -25,8 +25,8 @@ export function ReportUpload({ onUpload }: ReportUploadProps) {
         setError('Please upload a PDF file')
         return
       }
-      if (file.size > 10 * 1024 * 1024) {
-        setError('File size must be less than 10MB')
+      if (file.size > 50 * 1024 * 1024) {
+        setError('File size must be less than 50MB')
         return
       }
       setFile(file)
@@ -192,7 +192,7 @@ export function ReportUpload({ onUpload }: ReportUploadProps) {
                   </p>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  PDF files only, up to 10MB
+                  PDF files only, up to 50MB
                 </p>
               </motion.div>
             </div>
