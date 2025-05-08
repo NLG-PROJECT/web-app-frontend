@@ -48,7 +48,6 @@ export function IncomeAnalysis({ data }: IncomeAnalysisProps) {
           <IncomeWaterfall data={data} />
           <IncomeTrends data={data} />
         </div>
-        <EPSAnalysis data={data} />
       </div>
     </div>
   )

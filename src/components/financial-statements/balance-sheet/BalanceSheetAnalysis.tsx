@@ -11,11 +11,12 @@ import { useTheme } from '@/context/ThemeProvider'
 
 interface BalanceSheetAnalysisProps {
   data: {
-    item: string
-    [key: string]: string | number | null
-  }[]
+    flattened: { item: string; [key: string]: string | number | null }[]
+    assets: { item: string; [key: string]: string | number | null }[]
+    liabilities: { item: string; [key: string]: string | number | null }[]
+    derivatives?: { item: string; [key: string]: string | number | null }[]
+  }
 }
-
 export function BalanceSheetAnalysis({ data }: BalanceSheetAnalysisProps) {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
@@ -23,8 +24,8 @@ export function BalanceSheetAnalysis({ data }: BalanceSheetAnalysisProps) {
 
   // Get years from the data
   const getYears = () => {
-    if (data.length === 0) return []
-    const firstItem = data[0]
+    if (data.flattened.length === 0) return []
+    const firstItem = data.flattened[0]
     return Object.keys(firstItem)
       .filter((key) => key !== 'item')
       .sort()
@@ -82,7 +83,7 @@ export function BalanceSheetAnalysis({ data }: BalanceSheetAnalysisProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((row) => (
+                  {data.flattened.map((row) => (
                     <tr key={row.item}>
                       <td className="text-left">{row.item}</td>
                       {years.map((year) => (
@@ -100,11 +101,11 @@ export function BalanceSheetAnalysis({ data }: BalanceSheetAnalysisProps) {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <AssetStructure data={data} />
-        <BalanceSheetHealth data={data} />
-        <WorkingCapital data={data} />
-        <LiabilityEquityFlow data={data} />
-        <BalanceBridge data={data} />
+        <AssetStructure data={data.assets} />
+        {/* <BalanceSheetHealth data={[...data.assets, ...data.liabilities]} /> */}
+        <WorkingCapital assets={data.assets} liabilities={data.liabilities} />
+        {/* <LiabilityEquityFlow data={data} />
+        <BalanceBridge data={data} /> */}
       </div>
     </div>
   )
