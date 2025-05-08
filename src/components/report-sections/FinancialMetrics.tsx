@@ -1,24 +1,79 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { BarChart3 } from 'lucide-react'
+import { BarChart3, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import { IncomeAnalysis } from '@/components/financial-statements/IncomeAnalysis'
 import { BalanceSheetAnalysis } from '@/components/financial-statements/balance-sheet/BalanceSheetAnalysis'
 import CashflowAnalysis from '@/components/financial-statements/CashflowAnalysis'
-import sampleData from '../../../data/sample.json'
+import { Button } from '@/components/ui/button'
+import { fetchFinancialData } from '@/services/financialDataService'
 
 interface FinancialStatement {
   item: string
-  [key: string]: string | number | null
+  [year: string]: string | number | null
 }
 
-interface SampleData {
+interface FinancialData {
   ConsolidatedStatementsOfIncomeOrComprehensiveIncome: FinancialStatement[]
-  ConsolidatedBalanceSheets: FinancialStatement[]
   ConsolidatedStatementsOfCashFlows: FinancialStatement[]
+  ConsolidatedBalanceSheets: {
+    flattened: FinancialStatement[]
+    assets: FinancialStatement[]
+    liabilities: FinancialStatement[]
+    derivatives?: FinancialStatement[]
+  }
+  income_statement_dates?: string[]
+  cashflow_statement_dates?: string[]
+  ConsolidatedStatementsOfEquity?: FinancialStatement[]
 }
+
+// Cache keys for session storage
+const FINANCIAL_DATA_CACHE_KEY = 'financial_data_cache'
+const FINANCIAL_INITIAL_FETCH_KEY = 'financial_initial_fetch'
 
 export function FinancialMetrics() {
-  const typedSampleData = sampleData as SampleData
+  const [isLoading, setIsLoading] = useState(() => {
+    const cachedData = sessionStorage.getItem(FINANCIAL_DATA_CACHE_KEY)
+    return !cachedData
+  })
+  const [error, setError] = useState<string | null>(null)
+  const [financialData, setFinancialData] = useState<FinancialData | null>(
+    () => {
+      const cachedData = sessionStorage.getItem(FINANCIAL_DATA_CACHE_KEY)
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData)
+        console.log('Loaded financial data from cache:', parsedData)
+        return parsedData
+      }
+      return null
+    },
+  )
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await fetchFinancialData()
+
+      // Store in session storage
+      sessionStorage.setItem(FINANCIAL_DATA_CACHE_KEY, JSON.stringify(data))
+      console.log('Stored financial data in cache:', data)
+      setFinancialData(data)
+    } catch (err) {
+      console.error('Error fetching financial data:', err)
+      setError('Failed to load financial data. Please try again later.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    const hasInitialFetch = sessionStorage.getItem(FINANCIAL_INITIAL_FETCH_KEY)
+    if (!hasInitialFetch) {
+      fetchData()
+      sessionStorage.setItem(FINANCIAL_INITIAL_FETCH_KEY, 'true')
+    }
+  }, [])
 
   return (
     <motion.div
@@ -33,6 +88,22 @@ export function FinancialMetrics() {
             <BarChart3 className="size-5 text-primary" />
             Financial Metrics
           </CardTitle>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                sessionStorage.removeItem(FINANCIAL_DATA_CACHE_KEY)
+                setFinancialData(null)
+                setIsLoading(true)
+                fetchData()
+              }}
+              className="gap-2"
+            >
+              <Loader2 className="size-3" />
+              Resync
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground mb-6">
@@ -40,19 +111,37 @@ export function FinancialMetrics() {
             expenses, balance sheet composition, and key financial ratios.
           </p>
 
-          <div className="space-y-8">
-            <IncomeAnalysis
-              data={
-                typedSampleData.ConsolidatedStatementsOfIncomeOrComprehensiveIncome
-              }
-            />
-            <BalanceSheetAnalysis
-              data={typedSampleData.ConsolidatedBalanceSheets}
-            />
-            <CashflowAnalysis
-              data={typedSampleData.ConsolidatedStatementsOfCashFlows}
-            />
-          </div>
+          {/* Loading State */}
+          {isLoading && (
+            <div className="mt-8 flex flex-col items-center justify-center py-12">
+              <Loader2 className="size-8 animate-spin text-primary mb-4" />
+              <p className="text-muted-foreground">Loading financial data...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="mt-8 p-4 rounded-lg bg-destructive/10 text-destructive">
+              {error}
+            </div>
+          )}
+
+          {/* Content */}
+          {!isLoading && !error && financialData && (
+            <div className="space-y-8">
+              <IncomeAnalysis
+                data={
+                  financialData.ConsolidatedStatementsOfIncomeOrComprehensiveIncome
+                }
+              />
+              <BalanceSheetAnalysis
+                data={financialData.ConsolidatedBalanceSheets}
+              />
+              <CashflowAnalysis
+                data={financialData.ConsolidatedStatementsOfCashFlows}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
     </motion.div>

@@ -1,8 +1,9 @@
+'use client'
+
 import { useState } from 'react'
 import { ReportChat } from '@/components/ReportChat'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ReportHeader } from '@/components/ReportHeader'
 import { ReportFooter } from '@/components/ReportFooter'
@@ -11,22 +12,15 @@ import {
   MessageSquare,
   FileText,
   BarChart3,
-  DollarSign,
   LineChart,
-  Building2,
-  Users,
   AlertTriangle,
-  Target,
-  Sparkles,
   ChevronRight,
 } from 'lucide-react'
 import {
   ExecutiveSummary,
   FinancialMetrics,
-  Valuation,
   MarketAnalysis,
   RiskAnalysis,
-  TeamStrategy,
 } from '@/components/report-sections'
 
 export default function ReportAnalysis() {
@@ -41,11 +35,7 @@ export default function ReportAnalysis() {
     try {
       setIsAnalyzing(true)
       setAnalysisError(null)
-
-      // Here you would typically make an API call to start the analysis
-      // For now, we'll just simulate a delay
       await new Promise((resolve) => setTimeout(resolve, 2000))
-
       setReportName(fileName)
       setHasReport(true)
     } catch (err) {
@@ -72,7 +62,6 @@ export default function ReportAnalysis() {
     <div className="min-h-screen flex flex-col">
       <ReportHeader />
       <div className="flex-1 flex relative">
-        {/* Main Content Area */}
         <div
           className={`flex-1 transition-all duration-300 ${
             isChatOpen ? 'pr-[400px]' : ''
@@ -128,48 +117,49 @@ export default function ReportAnalysis() {
               onValueChange={setCurrentSection}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-6 bg-muted/50 p-1">
+              <TabsList className="flex w-full bg-muted/50 p-1">
                 <TabsTrigger
                   value="executive-summary"
-                  className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
                 >
                   <FileText className="size-4" />
                   Executive Summary
                 </TabsTrigger>
+
                 <TabsTrigger
                   value="financial-metrics"
-                  className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
                 >
                   <BarChart3 className="size-4" />
                   Financial Metrics
                 </TabsTrigger>
-                <TabsTrigger
-                  value="valuation"
-                  className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
-                >
-                  <DollarSign className="size-4" />
-                  Valuation
-                </TabsTrigger>
+
                 <TabsTrigger
                   value="market-analysis"
-                  className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
                 >
                   <LineChart className="size-4" />
                   Market Analysis
+                  <span
+                    title="AI-generated — experimental content"
+                    className="ml-1"
+                  >
+                    ✨
+                  </span>
                 </TabsTrigger>
+
                 <TabsTrigger
                   value="risk-factors"
-                  className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
                 >
                   <AlertTriangle className="size-4" />
                   Risk Factors
-                </TabsTrigger>
-                <TabsTrigger
-                  value="team"
-                  className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm"
-                >
-                  <Users className="size-4" />
-                  Team & Strategy
+                  <span
+                    title="AI-generated — experimental content"
+                    className="ml-1"
+                  >
+                    ✨
+                  </span>
                 </TabsTrigger>
               </TabsList>
 
@@ -194,16 +184,6 @@ export default function ReportAnalysis() {
                   </motion.div>
                 </TabsContent>
 
-                <TabsContent value="valuation">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                  >
-                    <Valuation />
-                  </motion.div>
-                </TabsContent>
-
                 <TabsContent value="market-analysis">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -223,22 +203,11 @@ export default function ReportAnalysis() {
                     <RiskAnalysis />
                   </motion.div>
                 </TabsContent>
-
-                <TabsContent value="team">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                  >
-                    <TeamStrategy />
-                  </motion.div>
-                </TabsContent>
               </AnimatePresence>
             </Tabs>
           </div>
         </div>
 
-        {/* Chat Sidebar */}
         {isChatOpen && (
           <div className="fixed right-0 top-[3rem] bottom-8 w-[400px]">
             <div className="h-full pt-8">

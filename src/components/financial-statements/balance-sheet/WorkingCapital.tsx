@@ -5,21 +5,24 @@ import type { EChartsOption } from 'echarts'
 import { useTheme } from '@/context/ThemeProvider'
 
 interface WorkingCapitalProps {
-  data: {
+  assets: {
+    item: string
+    [key: string]: string | number | null
+  }[]
+  liabilities: {
     item: string
     [key: string]: string | number | null
   }[]
 }
 
-export function WorkingCapital({ data }: WorkingCapitalProps) {
+export function WorkingCapital({ assets, liabilities }: WorkingCapitalProps) {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
 
-  // Get latest year from the data
   const getLatestYear = () => {
-    if (data.length === 0) return ''
-    const firstItem = data[0]
-    const years = Object.keys(firstItem)
+    if (assets.length === 0 && liabilities.length === 0) return ''
+    const source = assets.length > 0 ? assets[0] : liabilities[0]
+    const years = Object.keys(source)
       .filter((key) => key !== 'item')
       .sort()
     return years[years.length - 1]
@@ -27,103 +30,68 @@ export function WorkingCapital({ data }: WorkingCapitalProps) {
 
   const latestYear = getLatestYear()
 
-  // Process data for Sankey diagram
-  const processData = () => {
-    const findValue = (itemName: string) => {
-      const item = data.find((d) => d.item === itemName)
-      return item ? (item[latestYear] as number) : 0
-    }
-
-    // Current Assets
-    const cash = findValue('Cash and cash equivalents')
-    const marketableSecurities = findValue('Marketable securities')
-    const accountsReceivable = findValue('Accounts receivable, net')
-    const inventories = findValue('Inventories')
-    const otherCurrentAssets = findValue('Other current assets')
-
-    // Current Liabilities
-    const accountsPayable = findValue('Accounts payable')
-    const otherCurrentLiabilities = findValue('Other current liabilities')
-    const deferredRevenue = findValue('Deferred revenue')
-    const commercialPaper = findValue('Commercial paper')
-    const currentTermDebt = findValue('Term debt')
-
-    return {
-      nodes: [
-        // Current Assets
-        { name: 'Current Assets' },
-        { name: 'Cash', value: cash },
-        { name: 'Marketable Securities', value: marketableSecurities },
-        { name: 'Accounts Receivable', value: accountsReceivable },
-        { name: 'Inventories', value: inventories },
-        { name: 'Other Current Assets', value: otherCurrentAssets },
-
-        // Working Capital
-        { name: 'Working Capital' },
-
-        // Current Liabilities
-        { name: 'Current Liabilities' },
-        { name: 'Accounts Payable', value: accountsPayable },
-        { name: 'Other Current Liabilities', value: otherCurrentLiabilities },
-        { name: 'Deferred Revenue', value: deferredRevenue },
-        { name: 'Commercial Paper', value: commercialPaper },
-        { name: 'Current Term Debt', value: currentTermDebt },
-      ],
-      links: [
-        // Current Assets to Working Capital
-        { source: 'Cash', target: 'Working Capital', value: cash },
-        {
-          source: 'Marketable Securities',
-          target: 'Working Capital',
-          value: marketableSecurities,
-        },
-        {
-          source: 'Accounts Receivable',
-          target: 'Working Capital',
-          value: accountsReceivable,
-        },
-        {
-          source: 'Inventories',
-          target: 'Working Capital',
-          value: inventories,
-        },
-        {
-          source: 'Other Current Assets',
-          target: 'Working Capital',
-          value: otherCurrentAssets,
-        },
-
-        // Working Capital to Current Liabilities
-        {
-          source: 'Working Capital',
-          target: 'Accounts Payable',
-          value: accountsPayable,
-        },
-        {
-          source: 'Working Capital',
-          target: 'Other Current Liabilities',
-          value: otherCurrentLiabilities,
-        },
-        {
-          source: 'Working Capital',
-          target: 'Deferred Revenue',
-          value: deferredRevenue,
-        },
-        {
-          source: 'Working Capital',
-          target: 'Commercial Paper',
-          value: commercialPaper,
-        },
-        {
-          source: 'Working Capital',
-          target: 'Current Term Debt',
-          value: currentTermDebt,
-        },
-      ],
-    }
+  const abbreviate = (text: string) => {
+    const clean = text.replace(/[^a-zA-Z0-9 ]/g, '')
+    const words = clean.split(/\s+/).filter(Boolean)
+    const abbr = words
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase()
+    return abbr.length > 7 ? abbr.slice(0, 7) : abbr
   }
 
-  const { nodes, links } = processData()
+  const extractValidEntries = (
+    dataset: { item: string; [key: string]: string | number | null }[],
+  ) => {
+    return dataset
+      .map((entry) => {
+        const value = entry[latestYear]
+        const full = entry.item
+        const abbr = abbreviate(full)
+        return {
+          full,
+          abbr,
+          value: typeof value === 'number' && value > 0 ? value : null,
+        }
+      })
+      .filter((e) => e.value !== null) as {
+      full: string
+      abbr: string
+      value: number
+    }[]
+  }
+
+  const assetEntries = extractValidEntries(assets)
+  const liabilityEntries = extractValidEntries(liabilities)
+
+  const abbrToFullMap = Object.fromEntries([
+    ...assetEntries.map((e) => [e.abbr, e.full]),
+    ...liabilityEntries.map((e) => [e.abbr, e.full]),
+  ])
+
+  const nodes = [
+    ...assetEntries.map((e) => ({
+      name: `${e.abbr} - ${e.value}M`,
+      value: e.value,
+    })),
+    ...liabilityEntries.map((e) => ({
+      name: `${e.abbr} - ${e.value}M`,
+      value: e.value,
+    })),
+  ]
+
+  const links = [
+    ...assetEntries.map((e) => ({
+      source: `${e.abbr} - ${e.value}M`,
+      target: `${liabilityEntries[0]?.abbr} - ${liabilityEntries[0]?.value}M`,
+      value: e.value,
+    })),
+    ...liabilityEntries.slice(1).map((e) => ({
+      source: `${liabilityEntries[0]?.abbr} - ${liabilityEntries[0]?.value}M`,
+      target: `${e.abbr} - ${e.value}M`,
+      value: e.value,
+    })),
+  ]
 
   const option: EChartsOption = {
     backgroundColor: 'transparent',
@@ -140,6 +108,11 @@ export function WorkingCapital({ data }: WorkingCapitalProps) {
         color: isDark ? '#fff' : '#000',
         fontFamily: 'Inter, sans-serif',
       },
+      formatter: (params: any) => {
+        const abbr = params.name.split(' - ')[0]
+        const fullName = abbrToFullMap[abbr] || abbr
+        return `${fullName}: ${params.value}M`
+      },
     },
     series: [
       {
@@ -152,43 +125,25 @@ export function WorkingCapital({ data }: WorkingCapitalProps) {
         levels: [
           {
             depth: 0,
-            itemStyle: {
-              color: isDark ? '#10b981' : '#059669',
-            },
-            lineStyle: {
-              color: 'source',
-              opacity: 0.6,
-            },
+            itemStyle: { color: isDark ? '#10b981' : '#059669' },
+            lineStyle: { color: 'source', opacity: 0.6 },
           },
           {
             depth: 1,
-            itemStyle: {
-              color: isDark ? '#6366f1' : '#4f46e5',
-            },
-            lineStyle: {
-              color: 'source',
-              opacity: 0.4,
-            },
+            itemStyle: { color: isDark ? '#6366f1' : '#4f46e5' },
+            lineStyle: { color: 'source', opacity: 0.4 },
           },
           {
             depth: 2,
-            itemStyle: {
-              color: isDark ? '#ef4444' : '#dc2626',
-            },
-            lineStyle: {
-              color: 'source',
-              opacity: 0.2,
-            },
+            itemStyle: { color: isDark ? '#ef4444' : '#dc2626' },
+            lineStyle: { color: 'source', opacity: 0.2 },
           },
         ],
-        lineStyle: {
-          curveness: 0.5,
-          opacity: 0.4,
-        },
+        lineStyle: { curveness: 0.5, opacity: 0.4 },
         label: {
           color: isDark ? '#fff' : '#000',
           fontFamily: 'Inter, sans-serif',
-          formatter: '{b}\n{c}M',
+          formatter: (params: any) => `${params.name}`,
         },
       },
     ],
@@ -196,18 +151,18 @@ export function WorkingCapital({ data }: WorkingCapitalProps) {
 
   return (
     <Card className="border-primary/20 bg-gradient-to-br from-background to-muted/20">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-xl font-semibold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-          Working Capital Flow ({latestYear})
+      <CardHeader className="flex flex-col space-y-1 pb-2">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          Asset & Liability Flow ({latestYear})
         </CardTitle>
+        <div className="text-lg font-semibold text-center mb-6 text-muted-foreground">
+          Relationship between key assets and liabilities.
+        </div>
       </CardHeader>
       <CardContent>
-        <div className="text-sm text-center mb-4 text-muted-foreground">
-          (Flow of current assets to current liabilities)
-        </div>
         <ReactECharts
           option={option}
-          style={{ height: '500px' }}
+          style={{ height: `${150 + nodes.length * 12}px` }}
           theme={isDark ? 'dark' : undefined}
         />
       </CardContent>
