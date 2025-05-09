@@ -1,0 +1,1099 @@
+{
+  "cashflow_statement": {
+    "dates": {
+      "2023": "Dec 30, 2023",
+      "2022": "Dec 31, 2022",
+      "2021": "Dec 25, 2021"
+    },
+    "ConsolidatedStatementsOfCashFlows": [
+      {
+        "item": "Cash and cash equivalents, beginning of period",
+        "2023": 11144.0,
+        "2022": 4827.0,
+        "2021": 5865.0
+      },
+      {
+        "item": "Cash flows provided by (used for) operating activities:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Net income",
+        "2023": 1675.0,
+        "2022": 8017.0,
+        "2021": 19868.0
+      },
+      {
+        "item": "Adjustments to reconcile net income to net cash provided by operating activities:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Depreciation",
+        "2023": 7847.0,
+        "2022": 11128.0,
+        "2021": 9953.0
+      },
+      {
+        "item": "Share-based compensation",
+        "2023": 3229.0,
+        "2022": 3128.0,
+        "2021": 2036.0
+      },
+      {
+        "item": "Restructuring and other charges",
+        "2023": -424.0,
+        "2022": 1074.0,
+        "2021": 2626.0
+      },
+      {
+        "item": "Amortization of intangibles",
+        "2023": 1755.0,
+        "2022": 1907.0,
+        "2021": 1839.0
+      },
+      {
+        "item": "(Gains) losses on equity investments, net",
+        "2023": -42.0,
+        "2022": -4254.0,
+        "2021": -1458.0
+      },
+      {
+        "item": "(Gains) losses on divestitures",
+        "2023": null,
+        "2022": -1059.0,
+        "2021": null
+      },
+      {
+        "item": "Changes in assets and liabilities:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Accounts receivable",
+        "2023": 731.0,
+        "2022": 5327.0,
+        "2021": -2674.0
+      },
+      {
+        "item": "Inventories",
+        "2023": 2097.0,
+        "2022": -2436.0,
+        "2021": -2339.0
+      },
+      {
+        "item": "Accounts payable",
+        "2023": -801.0,
+        "2022": -29.0,
+        "2021": 1190.0
+      },
+      {
+        "item": "Accrued compensation and benefits",
+        "2023": -614.0,
+        "2022": -1533.0,
+        "2021": 515.0
+      },
+      {
+        "item": "Prepaid customer supply agreements",
+        "2023": null,
+        "2022": -24.0,
+        "2021": -1583.0
+      },
+      {
+        "item": "Income taxes",
+        "2023": -3531.0,
+        "2022": -4535.0,
+        "2021": -441.0
+      },
+      {
+        "item": "Other assets and liabilities",
+        "2023": -451.0,
+        "2022": -1278.0,
+        "2021": -76.0
+      },
+      {
+        "item": "Total adjustments",
+        "2023": 9796.0,
+        "2022": 7416.0,
+        "2021": 9588.0
+      },
+      {
+        "item": "Net cash provided by operating activities",
+        "2023": 11471.0,
+        "2022": 15433.0,
+        "2021": 29456.0
+      },
+      {
+        "item": "Cash flows provided by (used for) investing activities:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Additions to property, plant, and equipment",
+        "2023": -25750.0,
+        "2022": -24844.0,
+        "2021": -18733.0
+      },
+      {
+        "item": "Additions to held for sale nullD property, plant, and equipment",
+        "2023": null,
+        "2022": -206.0,
+        "2021": -1596.0
+      },
+      {
+        "item": "Proceeds from capital-related government incentives",
+        "2023": 1011.0,
+        "2022": 246.0,
+        "2021": 166.0
+      },
+      {
+        "item": "Purchase of short-term investments",
+        "2023": -44414.0,
+        "2022": -43647.0,
+        "2021": -40554.0
+      },
+      {
+        "item": "Maturities and sales of short-term investments",
+        "2023": 44077.0,
+        "2022": 48730.0,
+        "2021": 35299.0
+      },
+      {
+        "item": "Purchases of equity investments",
+        "2023": -399.0,
+        "2022": -510.0,
+        "2021": -613.0
+      },
+      {
+        "item": "Sales of equity investments",
+        "2023": 472.0,
+        "2022": 4961.0,
+        "2021": 581.0
+      },
+      {
+        "item": "Proceeds from divestitures",
+        "2023": null,
+        "2022": 6579.0,
+        "2021": null
+      },
+      {
+        "item": "Other investing",
+        "2023": 962.0,
+        "2022": -1540.0,
+        "2021": 1167.0
+      },
+      {
+        "item": "Net cash used for investing activities",
+        "2023": -24041.0,
+        "2022": -10231.0,
+        "2021": -24283.0
+      },
+      {
+        "item": "Cash flows provided by (used for) finullcing activities:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Issuance of commercial paper, net of issuance costs",
+        "2023": null,
+        "2022": 3945.0,
+        "2021": null
+      },
+      {
+        "item": "Repayment of commercial paper",
+        "2023": -3944.0,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Payments on finullce leases",
+        "2023": -96.0,
+        "2022": -345.0,
+        "2021": null
+      },
+      {
+        "item": "Partner contributions",
+        "2023": 1511.0,
+        "2022": 874.0,
+        "2021": null
+      },
+      {
+        "item": "Proceeds from sales of subsidiary shares",
+        "2023": 2959.0,
+        "2022": 1032.0,
+        "2021": null
+      },
+      {
+        "item": "Issuance of long-term debt, net of issuance costs",
+        "2023": 11391.0,
+        "2022": 6548.0,
+        "2021": 4974.0
+      },
+      {
+        "item": "Repayment of debt",
+        "2023": -423.0,
+        "2022": -4984.0,
+        "2021": -2500.0
+      },
+      {
+        "item": "Proceeds from sales of common stock through employee equity incentive plans",
+        "2023": 1042.0,
+        "2022": 977.0,
+        "2021": 1020.0
+      },
+      {
+        "item": "Repurchase of common stock",
+        "2023": null,
+        "2022": null,
+        "2021": -2415.0
+      },
+      {
+        "item": "Payment of dividends to stockholders",
+        "2023": -3088.0,
+        "2022": -5997.0,
+        "2021": -5644.0
+      },
+      {
+        "item": "Other finullcing",
+        "2023": -847.0,
+        "2022": -935.0,
+        "2021": -1646.0
+      },
+      {
+        "item": "Net cash provided by (used for) finullcing activities",
+        "2023": 8505.0,
+        "2022": 1115.0,
+        "2021": -6211.0
+      },
+      {
+        "item": "Net increase (decrease) in cash and cash equivalents",
+        "2023": -4065.0,
+        "2022": 6317.0,
+        "2021": -1038.0
+      },
+      {
+        "item": "Cash and cash equivalents, end of period",
+        "2023": 7079.0,
+        "2022": 11144.0,
+        "2021": 4827.0
+      },
+      {
+        "item": "Supplemental disclosures:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Acquisition of property, plant, and equipment included in accounts payable and accrued",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "liabilities",
+        "2023": 4804.0,
+        "2022": 5431.0,
+        "2021": 1619.0
+      },
+      {
+        "item": "Cash paid during the year for:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Interest, net of capitalized interest",
+        "2023": 613.0,
+        "2022": 459.0,
+        "2021": 545.0
+      },
+      {
+        "item": "Income taxes, net of refunds",
+        "2023": 2621.0,
+        "2022": 4282.0,
+        "2021": 2263.0
+      },
+      {
+        "item": "See accompanying notes.",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      }
+    ]
+  },
+  "balance_sheet": {
+    "balance_sheet": {
+      "main": [
+        {
+          "item": "Current assets:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Cash and cash equivalents",
+          "2023": 7079.0,
+          "2022": 11144.0
+        },
+        {
+          "item": "Short-term investments",
+          "2023": 17955.0,
+          "2022": 17194.0
+        },
+        {
+          "item": "Accounts receivable, net",
+          "2023": 3402.0,
+          "2022": 4133.0
+        },
+        {
+          "item": "Inventories",
+          "2023": 11127.0,
+          "2022": 13224.0
+        },
+        {
+          "item": "Other current assets",
+          "2023": 3706.0,
+          "2022": 4712.0
+        },
+        {
+          "item": "Total current assets",
+          "2023": 43269.0,
+          "2022": 50407.0
+        },
+        {
+          "item": "Property, plant, and equipment, net",
+          "2023": 96647.0,
+          "2022": 80860.0
+        },
+        {
+          "item": "Equity investments",
+          "2023": 5829.0,
+          "2022": 5912.0
+        },
+        {
+          "item": "Goodwill",
+          "2023": 27591.0,
+          "2022": 27591.0
+        },
+        {
+          "item": "Identified intangible assets, net",
+          "2023": 4589.0,
+          "2022": 6018.0
+        },
+        {
+          "item": "Other long-term assets",
+          "2023": 13647.0,
+          "2022": 11315.0
+        },
+        {
+          "item": "Total assets",
+          "2023": 191572.0,
+          "2022": 182103.0
+        },
+        {
+          "item": "Liabilities and stockholders' equity",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Current liabilities:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Short-term debt",
+          "2023": 2288.0,
+          "2022": 4367.0
+        },
+        {
+          "item": "Accounts payable",
+          "2023": 8578.0,
+          "2022": 9595.0
+        },
+        {
+          "item": "Accrued compensation and benefits",
+          "2023": 3655.0,
+          "2022": 4084.0
+        },
+        {
+          "item": "Income taxes payable",
+          "2023": 1107.0,
+          "2022": 2251.0
+        },
+        {
+          "item": "Other accrued liabilities",
+          "2023": 12425.0,
+          "2022": 11858.0
+        },
+        {
+          "item": "Total current liabilities",
+          "2023": 28053.0,
+          "2022": 32155.0
+        },
+        {
+          "item": "Debt",
+          "2023": 46978.0,
+          "2022": 37684.0
+        },
+        {
+          "item": "Other long-term liabilities",
+          "2023": 6576.0,
+          "2022": 8978.0
+        },
+        {
+          "item": "Commitments and Contingencies (Note 19)",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "(In Millions)",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Derivatives designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Derivatives not designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Equity contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives not designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "(In Millions)",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Derivatives designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Derivatives not designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Equity contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives not designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives",
+          "2023": null,
+          "2022": null
+        }
+      ],
+      "assets_group": [
+        {
+          "item": "Current assets:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Cash and cash equivalents",
+          "2023": 7079.0,
+          "2022": 11144.0
+        },
+        {
+          "item": "Short-term investments",
+          "2023": 17955.0,
+          "2022": 17194.0
+        },
+        {
+          "item": "Accounts receivable, net",
+          "2023": 3402.0,
+          "2022": 4133.0
+        },
+        {
+          "item": "Inventories",
+          "2023": 11127.0,
+          "2022": 13224.0
+        },
+        {
+          "item": "Other current assets",
+          "2023": 3706.0,
+          "2022": 4712.0
+        },
+        {
+          "item": "Total current assets",
+          "2023": 43269.0,
+          "2022": 50407.0
+        },
+        {
+          "item": "Property, plant, and equipment, net",
+          "2023": 96647.0,
+          "2022": 80860.0
+        },
+        {
+          "item": "Equity investments",
+          "2023": 5829.0,
+          "2022": 5912.0
+        },
+        {
+          "item": "Goodwill",
+          "2023": 27591.0,
+          "2022": 27591.0
+        },
+        {
+          "item": "Identified intangible assets, net",
+          "2023": 4589.0,
+          "2022": 6018.0
+        },
+        {
+          "item": "Other long-term assets",
+          "2023": 13647.0,
+          "2022": 11315.0
+        },
+        {
+          "item": "Total assets",
+          "2023": 191572.0,
+          "2022": 182103.0
+        }
+      ],
+      "liabilities_group": [
+        {
+          "item": "Liabilities and stockholders' equity",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Current liabilities:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Short-term debt",
+          "2023": 2288.0,
+          "2022": 4367.0
+        },
+        {
+          "item": "Accounts payable",
+          "2023": 8578.0,
+          "2022": 9595.0
+        },
+        {
+          "item": "Accrued compensation and benefits",
+          "2023": 3655.0,
+          "2022": 4084.0
+        },
+        {
+          "item": "Income taxes payable",
+          "2023": 1107.0,
+          "2022": 2251.0
+        },
+        {
+          "item": "Other accrued liabilities",
+          "2023": 12425.0,
+          "2022": 11858.0
+        },
+        {
+          "item": "Total current liabilities",
+          "2023": 28053.0,
+          "2022": 32155.0
+        },
+        {
+          "item": "Debt",
+          "2023": 46978.0,
+          "2022": 37684.0
+        },
+        {
+          "item": "Other long-term liabilities",
+          "2023": 6576.0,
+          "2022": 8978.0
+        },
+        {
+          "item": "Commitments and Contingencies (Note 19)",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "(In Millions)",
+          "2023": null,
+          "2022": null
+        }
+      ],
+      "derivatives_group": [
+        {
+          "item": "Derivatives designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Derivatives not designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Equity contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives not designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "(In Millions)",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Derivatives designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Derivatives not designated as hedging instruments:",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Foreign currency contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Interest rate contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Equity contracts",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives not designated as hedging instruments",
+          "2023": null,
+          "2022": null
+        },
+        {
+          "item": "Total derivatives",
+          "2023": null,
+          "2022": null
+        }
+      ]
+    }
+  },
+  "income_statement": {
+    "dates": {
+      "2023": "Dec 30, 2023",
+      "2022": "Dec 31, 2022",
+      "2021": "Dec 25, 2021"
+    },
+    "ConsolidatedStatementsOfIncomeOrComprehensiveIncome": [
+      {
+        "item": "Net revenue",
+        "2023": 54228.0,
+        "2022": 63054.0,
+        "2021": 79024.0
+      },
+      {
+        "item": "Cost of sales",
+        "2023": 32517.0,
+        "2022": 36188.0,
+        "2021": 35209.0
+      },
+      {
+        "item": "Gross margin",
+        "2023": 21711.0,
+        "2022": 26866.0,
+        "2021": 43815.0
+      },
+      {
+        "item": "Research and development",
+        "2023": 16046.0,
+        "2022": 17528.0,
+        "2021": 15190.0
+      },
+      {
+        "item": "Marketing, general, and administrative",
+        "2023": 5634.0,
+        "2022": 7002.0,
+        "2021": 6543.0
+      },
+      {
+        "item": "Restructuring and other charges",
+        "2023": -62.0,
+        "2022": 2.0,
+        "2021": 2626.0
+      },
+      {
+        "item": "Operating expenses",
+        "2023": 21618.0,
+        "2022": 24532.0,
+        "2021": 24359.0
+      },
+      {
+        "item": "Operating income",
+        "2023": 93.0,
+        "2022": 2334.0,
+        "2021": 19456.0
+      },
+      {
+        "item": "Gains (losses) on equity investments, net",
+        "2023": 40.0,
+        "2022": 4268.0,
+        "2021": 2729.0
+      },
+      {
+        "item": "Interest and other, net",
+        "2023": 629.0,
+        "2022": 1166.0,
+        "2021": -482.0
+      },
+      {
+        "item": "Income before taxes",
+        "2023": 762.0,
+        "2022": 7768.0,
+        "2021": 21703.0
+      },
+      {
+        "item": "Provision for (benefit from) taxes",
+        "2023": -913.0,
+        "2022": -249.0,
+        "2021": 1835.0
+      },
+      {
+        "item": "Net income",
+        "2023": 1675.0,
+        "2022": 8017.0,
+        "2021": 19868.0
+      },
+      {
+        "item": "Less: Net income (loss) attributable to non-controlling interests",
+        "2023": -14.0,
+        "2022": 3.0,
+        "2021": null
+      },
+      {
+        "item": "Net income attributable to Intel",
+        "2023": 1689.0,
+        "2022": 8014.0,
+        "2021": 19868.0
+      },
+      {
+        "item": "Earnings per share attributable to Intel\u2014basic",
+        "2023": 0.4,
+        "2022": 1.95,
+        "2021": 4.89
+      },
+      {
+        "item": "Earnings per share attributable to Intel\u2014diluted",
+        "2023": 0.4,
+        "2022": 1.94,
+        "2021": 4.86
+      },
+      {
+        "item": "Weighted average shares of common stock outstanding:",
+        "2023": null,
+        "2022": null,
+        "2021": null
+      },
+      {
+        "item": "Basic",
+        "2023": 4190.0,
+        "2022": 4108.0,
+        "2021": 4059.0
+      },
+      {
+        "item": "Diluted",
+        "2023": 4212.0,
+        "2022": 4123.0,
+        "2021": 4090.0
+      }
+    ]
+  },
+  "equity_statement": {
+    "equity_statement": [
+      {
+        "Shares": 4062.0,
+        "Amount": 25556.0,
+        "Total": 81038.0,
+        "description": "Balance as of December 26, 2020 $ $\n(751) $\n56,233 $ \u2014 $"
+      },
+      {
+        "Earnings": 35.0,
+        "Total": 35.0,
+        "description": "Adjustment to opening balance for change in accounting principle"
+      },
+      {
+        "Shares": 4062.0,
+        "Amount": 25556.0,
+        "Income (Loss)": null,
+        "Earnings": 56268.0,
+        "Total": 81073.0,
+        "description": "Opening Balance as of December 27, 2020 \u2014"
+      },
+      {
+        "Earnings": 19868.0,
+        "Total": 19868.0,
+        "description": "Net income (loss) \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Income (Loss)": null,
+        "Total": null,
+        "description": "Other comprehensive income (loss) \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": 54.0,
+        "Amount": 1022.0,
+        "Total": 1022.0,
+        "description": "Employee equity incentive plans and other \u2014 \u2014 \u2014"
+      },
+      {
+        "Amount": 2036.0,
+        "Total": 2036.0,
+        "description": "Share-based compensation \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": null,
+        "Amount": null,
+        "Earnings": null,
+        "Total": null,
+        "description": "Repurchase of common stock \u2014 \u2014"
+      },
+      {
+        "Shares": null,
+        "Amount": null,
+        "Earnings": null,
+        "Total": null,
+        "description": "Restricted stock unit withholdings \u2014 \u2014"
+      },
+      {
+        "Earnings": null,
+        "Total": null,
+        "description": "Cash dividends declared ($1.39 per share of common stock) \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": 4070.0,
+        "Amount": 28006.0,
+        "Income (Loss)": null,
+        "Earnings": 68265.0,
+        "Total": 95391.0,
+        "description": "Balance as of December 25, 2021 \u2014"
+      },
+      {
+        "Earnings": 8014.0,
+        "Interests": 3.0,
+        "Total": 8017.0,
+        "description": "Net income (loss) \u2014 \u2014 \u2014"
+      },
+      {
+        "Income (Loss)": 318.0,
+        "Total": 318.0,
+        "description": "Other comprehensive income (loss) \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Amount": 75.0,
+        "Interests": 1831.0,
+        "Total": 1906.0,
+        "description": "Proceeds from sales of subsidiary shares and partner contributions \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": 79.0,
+        "Amount": 1009.0,
+        "Total": 1009.0,
+        "description": "Employee equity incentive plans and other \u2014 \u2014 \u2014"
+      },
+      {
+        "Amount": 3099.0,
+        "Interests": 29.0,
+        "Total": 3128.0,
+        "description": "Share-based compensation \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": null,
+        "Amount": null,
+        "Earnings": 123.0,
+        "Total": null,
+        "description": "Restricted stock unit withholdings \u2014 \u2014"
+      },
+      {
+        "Earnings": null,
+        "Total": null,
+        "description": "Cash dividends declared ($1.46 per share of common stock) \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": 4137.0,
+        "Amount": 31580.0,
+        "Income (Loss)": null,
+        "Earnings": 70405.0,
+        "Interests": 1863.0,
+        "Total": 103286.0,
+        "description": "Balance as of December 31, 2022"
+      },
+      {
+        "Earnings": 1689.0,
+        "Interests": null,
+        "Total": 1675.0,
+        "description": "Net income (loss) \u2014 \u2014 \u2014"
+      },
+      {
+        "Income (Loss)": 347.0,
+        "Total": 347.0,
+        "description": "Other comprehensive income (loss) \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Amount": 1620.0,
+        "Interests": 2385.0,
+        "Total": 4005.0,
+        "description": "Proceeds from sales of subsidiary shares and partner contributions \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": 107.0,
+        "Amount": 1044.0,
+        "Total": 1044.0,
+        "description": "Employee equity incentive plans and other \u2014 \u2014 \u2014"
+      },
+      {
+        "Amount": 3088.0,
+        "Interests": 141.0,
+        "Total": 3229.0,
+        "description": "Share-based compensation \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": null,
+        "Amount": null,
+        "Earnings": 150.0,
+        "Total": null,
+        "description": "Restricted stock unit withholdings \u2014 \u2014"
+      },
+      {
+        "Earnings": null,
+        "Total": null,
+        "description": "Cash dividends declared ($0.74 per share of common stock) \u2014 \u2014 \u2014 \u2014"
+      },
+      {
+        "Shares": 4228.0,
+        "Amount": 36649.0,
+        "Interests": 4375.0,
+        "Total": 109965.0,
+        "description": "Balance as of December 30, 2023 $ $\n(215) $\n69,156 $"
+      }
+    ]
+  }
+}
